@@ -138,11 +138,6 @@
     "fields": {}
   },
   {
-    "type": "local_variable",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "program",
     "named": true,
     "fields": {},
@@ -250,6 +245,10 @@
   },
   {
     "type": "literal",
+    "named": true
+  },
+  {
+    "type": "local_variable",
     "named": true
   },
   {

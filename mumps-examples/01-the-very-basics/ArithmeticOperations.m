@@ -7,9 +7,11 @@
 
   write "There were ",apples," apples, ",!
   write "a total of ",total," fruits in a basket.",!
+  set total=apples
 
 ; now let's just concatenate a few strings
 
+  set g=6
   set a="Then, "
   set b="something happened:"
 
