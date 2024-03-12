@@ -1,0 +1,93 @@
+==================
+Variable Assignment
+==================
+  set apples=8
+  set total=apples
+  set a="Then, "
+---
+(program
+  (assignment
+    (local_variable)
+    (literal)
+  )
+  (assignment
+    (local_variable)
+    (local_variable)
+  )
+  (assignment
+    (local_variable)
+    (literal)
+  )
+)
+==================
+Comments
+==================
+  set apples=8
+  ; Set apples
+  set pears=9 ; Set pears
+---
+(program
+  (assignment
+    (local_variable)
+    (literal)
+  )
+  (comment)
+  (assignment
+    (local_variable)
+    (literal)
+  )
+  (comment)
+)
+==================
+Call Write
+==================
+  write "There were 8",!
+---
+(program
+  (call
+    (function)
+    (arguments
+      (literal)
+    )
+  )
+)
+==================
+Arithmetic
+==================
+  set apples=7
+  set pears=3+8
+  set fruits=apples+pears
+  set price=2
+  set revenue=price*fruits
+---
+(program
+  (assignment
+    (local_variable)
+    (literal)
+  )
+  (assignment
+    (local_variable)            
+    (binary_expression
+      (literal)
+      (literal)
+    )
+  )
+  (assignment
+    (local_variable)            
+    (binary_expression
+      (local_variable)
+      (local_variable)
+    )
+  )
+  (assignment
+    (local_variable)
+    (literal)
+  )
+  (assignment
+    (local_variable)            
+    (binary_expression
+      (local_variable)
+      (local_variable)
+    )
+  )
+)

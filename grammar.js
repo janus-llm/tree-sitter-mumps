@@ -94,7 +94,7 @@ module.exports = grammar({
       $.arguments,
     ),
 
-    set: $ => /set|s/,
+    _set: $ => /set|s/,
 
     // A Mumps variable name must begin with a letter or percent sign (%) and may be followed by letters, percent signs, or numbers.
     // TODO: The underscore (_) and dollar sign ($) characters are not legal in variable names.
@@ -105,7 +105,7 @@ module.exports = grammar({
     global_variable: $ => /[\^][a-zA-Z%][a-zA-Z0-9%]*/,
 
     assignment: $ => seq(
-      $.set,
+      $._set,
       choice(
         $.local_variable,
         $.global_variable,

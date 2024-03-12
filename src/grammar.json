@@ -303,7 +303,7 @@
         }
       ]
     },
-    "set": {
+    "_set": {
       "type": "PATTERN",
       "value": "set|s"
     },
@@ -320,7 +320,7 @@
       "members": [
         {
           "type": "SYMBOL",
-          "name": "set"
+          "name": "_set"
         },
         {
           "type": "CHOICE",

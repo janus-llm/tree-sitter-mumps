@@ -63,10 +63,6 @@
           "named": true
         },
         {
-          "type": "set",
-          "named": true
-        },
-        {
           "type": "unary_expression",
           "named": true
         }
@@ -249,10 +245,6 @@
   },
   {
     "type": "local_variable",
-    "named": true
-  },
-  {
-    "type": "set",
     "named": true
   }
 ]

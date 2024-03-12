@@ -26,7 +26,7 @@ enum ts_symbol_identifiers {
   anon_sym__ = 7,
   anon_sym_COMMA = 8,
   sym__write_outro = 9,
-  sym_set = 10,
+  sym__set = 10,
   sym_local_variable = 11,
   sym_global_variable = 12,
   anon_sym_EQ = 13,
@@ -65,7 +65,7 @@ static const char * const ts_symbol_names[] = {
   [anon_sym__] = "_",
   [anon_sym_COMMA] = ",",
   [sym__write_outro] = "_write_outro",
-  [sym_set] = "set",
+  [sym__set] = "_set",
   [sym_local_variable] = "local_variable",
   [sym_global_variable] = "global_variable",
   [anon_sym_EQ] = "=",
@@ -104,7 +104,7 @@ static const TSSymbol ts_symbol_map[] = {
   [anon_sym__] = anon_sym__,
   [anon_sym_COMMA] = anon_sym_COMMA,
   [sym__write_outro] = sym__write_outro,
-  [sym_set] = sym_set,
+  [sym__set] = sym__set,
   [sym_local_variable] = sym_local_variable,
   [sym_global_variable] = sym_global_variable,
   [anon_sym_EQ] = anon_sym_EQ,
@@ -173,8 +173,8 @@ static const TSSymbolMetadata ts_symbol_metadata[] = {
     .visible = false,
     .named = true,
   },
-  [sym_set] = {
-    .visible = true,
+  [sym__set] = {
+    .visible = false,
     .named = true,
   },
   [sym_local_variable] = {
@@ -447,14 +447,14 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
       ACCEPT_TOKEN(sym__write_outro);
       END_STATE();
     case 19:
-      ACCEPT_TOKEN(sym_set);
+      ACCEPT_TOKEN(sym__set);
       if (lookahead == 'e') ADVANCE(30);
       if (('0' <= lookahead && lookahead <= '9') ||
           ('A' <= lookahead && lookahead <= 'Z') ||
           ('a' <= lookahead && lookahead <= 'z')) ADVANCE(31);
       END_STATE();
     case 20:
-      ACCEPT_TOKEN(sym_set);
+      ACCEPT_TOKEN(sym__set);
       if (('0' <= lookahead && lookahead <= '9') ||
           ('A' <= lookahead && lookahead <= 'Z') ||
           ('a' <= lookahead && lookahead <= 'z')) ADVANCE(31);
@@ -595,7 +595,7 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
     [anon_sym__] = ACTIONS(1),
     [anon_sym_COMMA] = ACTIONS(1),
     [sym__write_outro] = ACTIONS(1),
-    [sym_set] = ACTIONS(1),
+    [sym__set] = ACTIONS(1),
     [sym_global_variable] = ACTIONS(1),
     [anon_sym_EQ] = ACTIONS(1),
     [anon_sym_LPAREN] = ACTIONS(1),
@@ -614,7 +614,7 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
     [sym_assignment] = STATE(2),
     [aux_sym_program_repeat1] = STATE(2),
     [sym_comment] = ACTIONS(3),
-    [sym_set] = ACTIONS(5),
+    [sym__set] = ACTIONS(5),
     [sym__alphanum] = ACTIONS(7),
   },
 };
@@ -622,7 +622,7 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
 static const uint16_t ts_small_parse_table[] = {
   [0] = 7,
     ACTIONS(5), 1,
-      sym_set,
+      sym__set,
     ACTIONS(7), 1,
       sym__alphanum,
     ACTIONS(9), 1,
@@ -646,7 +646,7 @@ static const uint16_t ts_small_parse_table[] = {
     ACTIONS(15), 1,
       sym_comment,
     ACTIONS(18), 1,
-      sym_set,
+      sym__set,
     ACTIONS(21), 1,
       sym__alphanum,
     STATE(6), 1,
@@ -666,7 +666,7 @@ static const uint16_t ts_small_parse_table[] = {
     STATE(17), 1,
       aux_sym_arguments_repeat1,
     ACTIONS(30), 2,
-      sym_set,
+      sym__set,
       sym__alphanum,
     ACTIONS(24), 3,
       ts_builtin_sym_end,
@@ -685,7 +685,7 @@ static const uint16_t ts_small_parse_table[] = {
       sym__write_outro,
     ACTIONS(34), 3,
       anon_sym_COMMA,
-      sym_set,
+      sym__set,
       sym__alphanum,
     ACTIONS(26), 5,
       anon_sym_DASH,
@@ -714,7 +714,7 @@ static const uint16_t ts_small_parse_table[] = {
   [119] = 2,
     ACTIONS(46), 3,
       anon_sym_COMMA,
-      sym_set,
+      sym__set,
       sym__alphanum,
     ACTIONS(44), 8,
       ts_builtin_sym_end,
@@ -728,7 +728,7 @@ static const uint16_t ts_small_parse_table[] = {
   [135] = 2,
     ACTIONS(50), 3,
       anon_sym_COMMA,
-      sym_set,
+      sym__set,
       sym__alphanum,
     ACTIONS(48), 8,
       ts_builtin_sym_end,
@@ -742,7 +742,7 @@ static const uint16_t ts_small_parse_table[] = {
   [151] = 2,
     ACTIONS(54), 3,
       anon_sym_COMMA,
-      sym_set,
+      sym__set,
       sym__alphanum,
     ACTIONS(52), 8,
       ts_builtin_sym_end,
@@ -756,7 +756,7 @@ static const uint16_t ts_small_parse_table[] = {
   [167] = 2,
     ACTIONS(58), 3,
       anon_sym_COMMA,
-      sym_set,
+      sym__set,
       sym__alphanum,
     ACTIONS(56), 8,
       ts_builtin_sym_end,
@@ -836,7 +836,7 @@ static const uint16_t ts_small_parse_table[] = {
       ts_builtin_sym_end,
       sym_comment,
     ACTIONS(70), 2,
-      sym_set,
+      sym__set,
       sym__alphanum,
     ACTIONS(26), 5,
       anon_sym_DASH,
@@ -850,7 +850,7 @@ static const uint16_t ts_small_parse_table[] = {
     STATE(16), 1,
       aux_sym_arguments_repeat1,
     ACTIONS(34), 2,
-      sym_set,
+      sym__set,
       sym__alphanum,
     ACTIONS(32), 3,
       ts_builtin_sym_end,
@@ -862,7 +862,7 @@ static const uint16_t ts_small_parse_table[] = {
     STATE(16), 1,
       aux_sym_arguments_repeat1,
     ACTIONS(77), 2,
-      sym_set,
+      sym__set,
       sym__alphanum,
     ACTIONS(75), 3,
       ts_builtin_sym_end,
@@ -884,11 +884,11 @@ static const uint16_t ts_small_parse_table[] = {
       ts_builtin_sym_end,
       sym_comment,
     ACTIONS(87), 2,
-      sym_set,
+      sym__set,
       sym__alphanum,
   [338] = 2,
     ACTIONS(91), 2,
-      sym_set,
+      sym__set,
       sym__alphanum,
     ACTIONS(89), 3,
       ts_builtin_sym_end,
@@ -899,7 +899,7 @@ static const uint16_t ts_small_parse_table[] = {
       ts_builtin_sym_end,
       sym_comment,
     ACTIONS(95), 2,
-      sym_set,
+      sym__set,
       sym__alphanum,
   [357] = 3,
     ACTIONS(97), 1,
