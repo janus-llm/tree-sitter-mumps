@@ -161,10 +161,6 @@
         {
           "type": "comment",
           "named": true
-        },
-        {
-          "type": "newline",
-          "named": true
         }
       ]
     }
@@ -229,11 +225,11 @@
     "named": false
   },
   {
-    "type": ",\"",
+    "type": "-",
     "named": false
   },
   {
-    "type": "-",
+    "type": "/",
     "named": false
   },
   {
@@ -254,10 +250,6 @@
   },
   {
     "type": "literal",
-    "named": true
-  },
-  {
-    "type": "newline",
     "named": true
   },
   {

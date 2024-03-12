@@ -18,8 +18,7 @@ module.exports = grammar({
     _statement: $ => choice(
       $._simple_statement,
       $._compound_statement,
-      // $._blank_line, // TODO: Find a home for this
-      $.newline,
+      // $._blank_line, // NOTE: Causes odd behavior related to whitespace included in other tokens!
     ),
 
     comment: _ => token(seq(';', /.*/)),
@@ -28,6 +27,7 @@ module.exports = grammar({
     _simple_statement: $ => choice(
       $.assignment,
       $.call,
+      $._write_call,
       $.comment,
     ),
 
@@ -58,9 +58,12 @@ module.exports = grammar({
         // No "order of operations" besides left associativity, so both prec is 1
         prec.left(1, seq($._expression, '*', $._expression)),  // Multiplication
         prec.left(1, seq($._expression, '+', $._expression)),  // Addition
+        prec.left(1, seq($._expression, '/', $._expression)),  // Division
+        prec.left(1, seq($._expression, '-', $._expression)),  // Subtraction
         prec.left(1, seq($._expression, '_', $._expression)),  // String concatenation
       ),
     ),
+
     arguments: $ => seq(
       $._expression,
       repeat(
@@ -69,13 +72,20 @@ module.exports = grammar({
           $._expression,
         ),
       ),
-      prec(3,
-        optional(
-          ",\"",  // TODO: This appears at the end of write argument lists sometimes?
-        ),
-      ),
+      // prec(3,
+      //   optional(
+      //     ",\"",  // TODO: This appears at the end of write argument lists sometimes?
+      //   ),
+      // ),
     ),
 
+    _write_outro: $ => ",\!",
+
+    // TODO: Make this an option of call instead
+    _write_call: $ => seq(
+      $.call,
+      $._write_outro,
+    ),
 
     function: $ => $._alphanum,
 
@@ -124,6 +134,7 @@ module.exports = grammar({
     // TODO: x20 is space!
     // literal: $ => /(("[^"]*")|([\x20-\x7F^\,]+))+/
     literal: $ => /(("[^"]*")|([^\x00-\x20\x2c\x22\x2b\x2a\x2d]+))+/,
+
 
     newline: $ => /[\s]*\n/,
   }
