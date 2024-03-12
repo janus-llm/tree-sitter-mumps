@@ -23,16 +23,48 @@ module.exports = grammar({
 
     comment: _ => token(seq(';', /.*/)),
 
-    // Generally on a single line
-    _simple_statement: $ => choice(
-      $.assignment,
-      $.call,
-      $._write_call,
-      $.comment,
+    postconditional: $ => seq(
+      ":",
+      $.conditional
     ),
 
-    // Generally on multiples lines
+    conditional: $ => choice(
+      seq(
+        $._expression,
+        "=",
+        $._expression,
+      ),
+      $._expression,
+    ),
+      
+
+    // Individual statements
+    _simple_statement: $ => seq(
+      optional(
+        $.conditional
+      ),
+      choice(
+        $.assignment,
+        $.call,
+        $._write_call,
+        $.comment,
+      ),
+    ),
+
+    // Multi-part statements
     _compound_statement: $ => choice(
+      $.for_statement,
+      $.if_statement,
+    ),
+
+    for_statement: $ => seq(
+      "for",
+    ),
+
+    if_statement: $ => seq(
+      "if",
+      $.conditional,
+      $._statement,
     ),
 
     _expression: $ => choice(
@@ -96,6 +128,13 @@ module.exports = grammar({
 
     _set: $ => /set|s/,
 
+    _variable: $ => choice(
+      $.local_array,
+      $.local_variable,
+      $.global_variable,
+    ),
+
+
     // A Mumps variable name must begin with a letter or percent sign (%) and may be followed by letters, percent signs, or numbers.
     // TODO: The underscore (_) and dollar sign ($) characters are not legal in variable names.
     // https://stackoverflow.com/questions/32967395/exclude-characters-from-group-regex-while-still-looking-for-characters
@@ -106,10 +145,7 @@ module.exports = grammar({
 
     assignment: $ => seq(
       $._set,
-      choice(
-        $.local_variable,
-        $.global_variable,
-      ),
+      $._variable,
       "=",
       $._expression,
     ),
