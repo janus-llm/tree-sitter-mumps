@@ -7,20 +7,51 @@ module.exports = grammar({
   ],
 
   rules: {
-    program: $ => repeat1(
+    program: $ => repeat1($._statement),
+
+    _statement: $ => choice(
+      $._simple_statement,
+      $._compound_statement,
+      $._blank_line, // TODO: Find a home for this
+    ),
+
+    // Generally on a single line
+    _simple_statement: $ => choice(
+      $.call,
+      $.assignment,
+      $.comment,
+    ),
+
+    // Generally on multiples lines
+    _compound_statement: $ => choice(
+    ),
+
+    _expression: $ => choice(
+      $.identifier,
+      $.literal,
+      $.unary_expression,
+      $.binary_expression,
+    ),
+
+    unary_expression: $ => prec(2,
       choice(
-        $.call,
-        $.assignment,
-        $.comment,
+        seq('-', $._expression),
+        seq('!', $._expression),
       ),
     ),
 
+    binary_expression: $ => choice(
+      // No "order of operations" besides left associativity, so both prec is 1
+      prec.left(1, seq($._expression, '*', $._expression)),
+      prec.left(1, seq($._expression, '+', $._expression)),
+    ),
+
     arguments: $ => seq(
-      $.literal,
+      $._expression,
       repeat(
         seq(
           ",",
-          $.literal,
+          $._expression,
         ),
       ),
     ),
@@ -35,12 +66,14 @@ module.exports = grammar({
     _set: $ => /set/,
 
     identifier: $ => $._alphanum,
+
+    _blank_line: $ => /[\s]*\n/,
     
     assignment: $ => seq(
       $._set,
       $.identifier,
       "=",
-      $.literal,
+      $._expression,
     ),
 
     _alphanum: $ => /[A-Za-z0-9]+/,
