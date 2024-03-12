@@ -12,11 +12,19 @@
           "named": true
         },
         {
-          "type": "identifier",
+          "type": "global_variable",
           "named": true
         },
         {
           "type": "literal",
+          "named": true
+        },
+        {
+          "type": "local_array",
+          "named": true
+        },
+        {
+          "type": "local_variable",
           "named": true
         },
         {
@@ -39,11 +47,23 @@
           "named": true
         },
         {
-          "type": "identifier",
+          "type": "global_variable",
           "named": true
         },
         {
           "type": "literal",
+          "named": true
+        },
+        {
+          "type": "local_array",
+          "named": true
+        },
+        {
+          "type": "local_variable",
+          "named": true
+        },
+        {
+          "type": "set",
           "named": true
         },
         {
@@ -66,11 +86,19 @@
           "named": true
         },
         {
-          "type": "identifier",
+          "type": "global_variable",
           "named": true
         },
         {
           "type": "literal",
+          "named": true
+        },
+        {
+          "type": "local_array",
+          "named": true
+        },
+        {
+          "type": "local_variable",
           "named": true
         },
         {
@@ -105,7 +133,12 @@
     "fields": {}
   },
   {
-    "type": "identifier",
+    "type": "local_array",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "local_variable",
     "named": true,
     "fields": {}
   },
@@ -128,6 +161,10 @@
         {
           "type": "comment",
           "named": true
+        },
+        {
+          "type": "newline",
+          "named": true
         }
       ]
     }
@@ -145,11 +182,19 @@
           "named": true
         },
         {
-          "type": "identifier",
+          "type": "global_variable",
           "named": true
         },
         {
           "type": "literal",
+          "named": true
+        },
+        {
+          "type": "local_array",
+          "named": true
+        },
+        {
+          "type": "local_variable",
           "named": true
         },
         {
@@ -161,6 +206,14 @@
   },
   {
     "type": "!",
+    "named": false
+  },
+  {
+    "type": "(",
+    "named": false
+  },
+  {
+    "type": ")",
     "named": false
   },
   {
@@ -176,6 +229,10 @@
     "named": false
   },
   {
+    "type": ",\"",
+    "named": false
+  },
+  {
     "type": "-",
     "named": false
   },
@@ -184,11 +241,27 @@
     "named": false
   },
   {
+    "type": "_",
+    "named": false
+  },
+  {
     "type": "comment",
     "named": true
   },
   {
+    "type": "global_variable",
+    "named": true
+  },
+  {
     "type": "literal",
+    "named": true
+  },
+  {
+    "type": "newline",
+    "named": true
+  },
+  {
+    "type": "set",
     "named": true
   }
 ]

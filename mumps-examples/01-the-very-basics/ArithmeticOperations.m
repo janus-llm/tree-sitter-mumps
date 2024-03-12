@@ -1,12 +1,11 @@
-
 ; the following two are the first lines of a story
+  set apples=7*6  set pears=8
 
-  set apples=7
-  set pears=8
-  set oranges=9
-  set total=apples+pears+oranges
+  set oranges=9 ; test comment!
+  set total=apples
+  set total=apples+pears
 
-  write "There were ",apples," apples, ",pears," pears and ",oranges," oranges,",!
+  write "There were ",apples," apples, ",!
   write "a total of ",total," fruits in a basket.",!
 
 ; now let's just concatenate a few strings
