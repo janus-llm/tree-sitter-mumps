@@ -1,25 +1,96 @@
 [
   {
-    "type": "program",
+    "type": "arguments",
     "named": true,
     "fields": {},
     "children": {
       "multiple": true,
-      "required": false,
+      "required": true,
       "types": [
         {
-          "type": "comment",
-          "named": true
-        },
-        {
-          "type": "junk",
+          "type": "literal",
           "named": true
         }
       ]
     }
   },
   {
-    "type": "@",
+    "type": "assignment",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "literal",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "call",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "arguments",
+          "named": true
+        },
+        {
+          "type": "function",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "function",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "identifier",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "program",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "assignment",
+          "named": true
+        },
+        {
+          "type": "call",
+          "named": true
+        },
+        {
+          "type": "comment",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": ",",
+    "named": false
+  },
+  {
+    "type": "=",
     "named": false
   },
   {
@@ -27,7 +98,7 @@
     "named": true
   },
   {
-    "type": "junk",
+    "type": "literal",
     "named": true
   }
 ]

@@ -1,73 +1,120 @@
 {
-  "name": "quick_check",
+  "name": "mumps",
   "rules": {
     "program": {
-      "type": "REPEAT",
+      "type": "REPEAT1",
       "content": {
         "type": "CHOICE",
         "members": [
           {
             "type": "SYMBOL",
-            "name": "_command_or_entry"
+            "name": "call"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "assignment"
           },
           {
             "type": "SYMBOL",
             "name": "comment"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "junk"
           }
         ]
       }
     },
-    "comment": {
-      "type": "TOKEN",
-      "content": {
-        "type": "SEQ",
-        "members": [
-          {
-            "type": "STRING",
-            "value": "%"
-          },
-          {
-            "type": "PATTERN",
-            "value": ".*"
-          }
-        ]
-      }
-    },
-    "junk": {
-      "type": "PATTERN",
-      "value": "[^%@\\s\\n\\t][^%@]*"
-    },
-    "_command_or_entry": {
+    "arguments": {
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "@"
+          "type": "SYMBOL",
+          "name": "literal"
         },
         {
-          "type": "PATTERN",
-          "value": "[a-zA-Z]+"
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": ","
+              },
+              {
+                "type": "SYMBOL",
+                "name": "literal"
+              }
+            ]
+          }
         }
       ]
+    },
+    "function": {
+      "type": "SYMBOL",
+      "name": "_alphanum"
+    },
+    "call": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "function"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "arguments"
+        }
+      ]
+    },
+    "_set": {
+      "type": "PATTERN",
+      "value": "set"
+    },
+    "identifier": {
+      "type": "SYMBOL",
+      "name": "_alphanum"
+    },
+    "assignment": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_set"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "identifier"
+        },
+        {
+          "type": "STRING",
+          "value": "="
+        },
+        {
+          "type": "SYMBOL",
+          "name": "literal"
+        }
+      ]
+    },
+    "_alphanum": {
+      "type": "PATTERN",
+      "value": "[A-Za-z0-9]+"
+    },
+    "literal": {
+      "type": "PATTERN",
+      "value": "((\"[^\"]*\")|([^\\x00-\\x19\\x2c\\x22]+))+"
     }
   },
   "extras": [
     {
       "type": "PATTERN",
-      "value": "[\\s\\n\\t]"
-    },
+      "value": "\\s"
+    }
+  ],
+  "conflicts": [],
+  "precedences": [],
+  "externals": [
     {
       "type": "SYMBOL",
       "name": "comment"
     }
   ],
-  "conflicts": [],
-  "precedences": [],
-  "externals": [],
   "inline": [],
   "supertypes": []
 }
