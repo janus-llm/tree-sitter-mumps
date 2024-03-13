@@ -110,8 +110,8 @@ Arithmetic
 ==================
 Conditionals
 ==================
-  set a=7
-  if a=7 set f=1
+  set abc=70
+  if abc=70 set f=1
 ---
 (program
   (assignment
@@ -119,8 +119,9 @@ Conditionals
     (literal))
   (if_statement
     (conditional
-      (local_variable)
-      (literal))
+      (binary_expression
+        (local_variable)
+        (literal)))
     (assignment
       (local_variable)
       (literal))))

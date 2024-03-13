@@ -29,11 +29,13 @@ module.exports = grammar({
     ),
 
     conditional: $ => choice(
-      seq(
-        $._expression,
-        "=",
-        $._expression,
-      ),
+      // prec(2,
+      //   seq(
+      //     $._expression,
+      //     "=",
+      //     $._expression,
+      //   ),
+      // ),
       $._expression,
     ),
       
@@ -105,19 +107,44 @@ module.exports = grammar({
 
     unary_expression: $ => prec(2,
       choice(
-        seq('-', $._expression),
-        seq('!', $._expression),
+        seq('-', $._expression),  // Negative
+        // seq('!', $._expression), TODO!
+        seq('\'', $._expression),  // Not
       ),
     ),
 
     binary_expression: $ => prec(2, 
       choice(
         // No "order of operations" besides left associativity, so both prec is 1
+        // Arithmetic
         prec.left(1, seq($._expression, '*', $._expression)),  // Multiplication
         prec.left(1, seq($._expression, '+', $._expression)),  // Addition
-        prec.left(1, seq($._expression, '/', $._expression)),  // Division
+        prec.left(1, seq($._expression, '/', $._expression)),  // Full division
+        prec.left(1, seq($._expression, '\\', $._expression)),  // Integer division
         prec.left(1, seq($._expression, '-', $._expression)),  // Subtraction
+        prec.left(1, seq($._expression, '#', $._expression)),  // Modulo
+        prec.left(1, seq($._expression, '**', $._expression)),  // Exponentiation
+        // Relational
+        prec.left(1, seq($._expression, '=', $._expression)),  // Equality
+        prec.left(1, seq($._expression, '>', $._expression)),  // Greater than
+        prec.left(1, seq($._expression, '<', $._expression)),  // Less than
+        prec.left(1, seq($._expression, '\'>', $._expression)),  // Less than or equal 
+        prec.left(1, seq($._expression, '\'<', $._expression)),  // Greater than or equal
+        prec.left(1, seq($._expression, '[', $._expression)),  // Contains
+        prec.left(1, seq($._expression, ']', $._expression)),  // Follows
+        prec.left(1, seq($._expression, '?', $._expression)),  // Pattern
+        prec.left(1, seq($._expression, ']]', $._expression)),  // Sorts after
+        prec.left(1, seq($._expression, '\'=', $._expression)),  // Does not equal
+        prec.left(1, seq($._expression, '\'[', $._expression)),  // Does not contain
+        prec.left(1, seq($._expression, '\']', $._expression)),  // Does not follow 
+        prec.left(1, seq($._expression, '\'?', $._expression)),  // Not pattern 
+        prec.left(1, seq($._expression, '\']]', $._expression)),  // Not sorts after 
         prec.left(1, seq($._expression, '_', $._expression)),  // String concatenation
+        // String operators
+        prec.left(1, seq($._expression, '_', $._expression)),  // String concatenation
+        // Logical operators
+        prec.left(1, seq($._expression, '&', $._expression)),  // And
+        prec.left(1, seq($._expression, '!', $._expression)),  // Or
       ),
     ),
 
@@ -180,7 +207,7 @@ module.exports = grammar({
     // The values in a string are, at a minimum, any ASCII character code between 32 to 127 (decimal) inclusive
     // TODO: x20 is space!
     // literal: $ => /(("[^"]*")|([\x20-\x7F^\,]+))+/
-    literal: $ => /(("[^"]*")|([^\x00-\x20\x2c\x22\x2b\x2a\x2d]+))+/,
+    literal: $ => /(("[^"]*")|([^\x00-\x20\x2c\x22\x2b\x2a\x2d\x3d]+))+/,
 
     newline: $ => /[\s]*\n/,
   }

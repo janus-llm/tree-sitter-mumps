@@ -116,7 +116,7 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": true,
+      "multiple": false,
       "required": false,
       "types": [
         {
@@ -254,6 +254,46 @@
     "named": false
   },
   {
+    "type": "#",
+    "named": false
+  },
+  {
+    "type": "&",
+    "named": false
+  },
+  {
+    "type": "'",
+    "named": false
+  },
+  {
+    "type": "'<",
+    "named": false
+  },
+  {
+    "type": "'=",
+    "named": false
+  },
+  {
+    "type": "'>",
+    "named": false
+  },
+  {
+    "type": "'?",
+    "named": false
+  },
+  {
+    "type": "'[",
+    "named": false
+  },
+  {
+    "type": "']",
+    "named": false
+  },
+  {
+    "type": "']]",
+    "named": false
+  },
+  {
     "type": "(",
     "named": false
   },
@@ -263,6 +303,10 @@
   },
   {
     "type": "*",
+    "named": false
+  },
+  {
+    "type": "**",
     "named": false
   },
   {
@@ -286,7 +330,35 @@
     "named": false
   },
   {
+    "type": "<",
+    "named": false
+  },
+  {
     "type": "=",
+    "named": false
+  },
+  {
+    "type": ">",
+    "named": false
+  },
+  {
+    "type": "?",
+    "named": false
+  },
+  {
+    "type": "[",
+    "named": false
+  },
+  {
+    "type": "\\",
+    "named": false
+  },
+  {
+    "type": "]",
+    "named": false
+  },
+  {
+    "type": "]]",
     "named": false
   },
   {
