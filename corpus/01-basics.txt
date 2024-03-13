@@ -91,3 +91,20 @@ Arithmetic
     )
   )
 )
+==================
+Conditionals
+==================
+  set a=7
+  if a=7 set f=1
+---
+(program
+  (assignment
+    (local_variable)
+    (literal))
+  (if_statement
+    (conditional
+      (local_variable)
+      (literal))
+    (assignment
+      (local_variable)
+      (literal))))
