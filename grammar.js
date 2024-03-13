@@ -61,6 +61,24 @@ module.exports = grammar({
 
     for_statement: $ => seq(
       "for",
+      $._identifier,
+      "=",
+      $._loop_range,
+      "do",
+      choice(
+        $._statement,
+      // repeat1(
+      ),
+    ),
+
+    _loop_range: $ => seq(  // TODO: What is this called?
+      $._variable,
+      repeat(   // Not using repeat 1 here, since maybe you can do for i=1 do
+        seq(
+          ":",
+          $._variable,
+        ),
+      ),
     ),
 
     if_statement: $ => seq(
@@ -80,15 +98,17 @@ module.exports = grammar({
 
     _identifier: $ => choice(
       $._variable,
-      //$._array,
+      // $._array,
       //$.function_name,
     ),
 
-    _variable: $ => choice(
-      $.local_array,
-      $.global_array,
-      $.local_variable,
-      $.global_variable,
+    _array: $ => prec(2,
+      choice(
+        prec(2,
+          $.local_array,
+        ),
+        // $.global_array,
+      ),
     ),
 
     _variable: $ => choice(
@@ -190,24 +210,38 @@ module.exports = grammar({
 
     // Boy this feels pretty hacky
     local_array: $ => seq(
-      /[a-zA-Z%][a-zA-Z0-9%]+/,
-      "(",
-      /[a-zA-Z0-9]/,
-      repeat(
-        seq(
-          ",",
-          /[a-zA-Z0-9]/,
-        ),
-      ),
-      ")",
+      // /[a-zA-Z0-9]+\([0-9]+\)/,
+      $.local_variable,
+      // $.array_index,
     ),
 
+    // array_index: $ => "(1)",
+    //   seq(
+    //   "(",
+    //   $._expression, // Probably this will just be an integer index, but could be more complicated
+    //   // repeat1( // >= 1 Because my impression is you have to provide an index
+    //   //   seq(
+    //   //     ",",
+    //   //     $._expression,
+    //   //   ),
+    //   // ),
+    //   ")",
+    // ),
+
+    _numeric: $ => /[0-9]+/,
     _alphanum: $ => /[A-Za-z0-9]+/,
 
-    // The values in a string are, at a minimum, any ASCII character code between 32 to 127 (decimal) inclusive
-    // TODO: x20 is space!
-    // literal: $ => /(("[^"]*")|([\x20-\x7F^\,]+))+/
-    literal: $ => /(("[^"]*")|([^\x00-\x20\x2c\x22\x2b\x2a\x2d\x3d]+))+/,
+    // Per docs: "the values in a string are, at a minimum, any ASCII character code between 32 to 127 (decimal) inclusive"
+    // TODO: Currently excluding:
+    // 2c: ,
+    // 22: "
+    // 2b: +
+    // 2a: *
+    // 2d: -
+    // 3d: =
+    // 28: (
+    // 29: )
+    literal: $ => /(("[^"]*")|([^\x00-\x20\x2c\x22\x2b\x2a\x2d\x3d\x28\x29]+))+/,
 
     newline: $ => /[\s]*\n/,
   }

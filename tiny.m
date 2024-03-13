@@ -1,2 +1,1 @@
-; the following two are the first lines of a story
-  write "TEST WRITE",!
+  for i=1:1:10 write "Hello world",!
