@@ -40,9 +40,10 @@ module.exports = grammar({
 
     // Individual statements
     _simple_statement: $ => seq(
-      optional(
-        $.conditional
-      ),
+      // TODO: A simple statement can have a conditional!
+      // optional(
+      //   $.conditional
+      // ),
       choice(
         $.assignment,
         $.call,

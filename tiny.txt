@@ -1,2 +1,0 @@
-  set total=apples
-  set a="Then, "

@@ -1,2 +1,2 @@
 ; the following two are the first lines of a story
-  set total=apples
+  write "TEST WRITE",!

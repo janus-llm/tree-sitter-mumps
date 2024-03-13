@@ -84,18 +84,6 @@
           "members": [
             {
               "type": "SYMBOL",
-              "name": "conditional"
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
-        },
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
               "name": "assignment"
             },
             {
