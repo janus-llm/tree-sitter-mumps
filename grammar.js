@@ -47,7 +47,6 @@ module.exports = grammar({
       choice(
         $.assignment,
         $.call,
-        $._write_call,
         $.comment,
       ),
     ),
@@ -69,15 +68,40 @@ module.exports = grammar({
     ),
 
     _expression: $ => choice(
-      prec(2, 
+      prec(2, // This prec could be dicey, since we really just go right to left! 
         $.binary_expression,
       ),
       $.unary_expression,
-      $.local_variable,
-      $.global_variable,
-      $.local_array,
+      $._identifier,
       $.literal,
     ),
+
+    _identifier: $ => choice(
+      $._variable,
+      //$._array,
+      //$.function_name,
+    ),
+
+    _variable: $ => choice(
+      $.local_array,
+      $.global_array,
+      $.local_variable,
+      $.global_variable,
+    ),
+
+    _variable: $ => choice(
+      $.local_variable,
+      $.global_variable,
+    ),
+
+    // A Mumps variable name must begin with a letter or percent sign (%) and may be followed by letters, percent signs, or numbers.
+    // TODO: The underscore (_) and dollar sign ($) characters are not legal in variable names.
+    // https://stackoverflow.com/questions/32967395/exclude-characters-from-group-regex-while-still-looking-for-characters
+    local_variable: $ => /[a-zA-Z%][a-zA-Z0-9%]*/,
+
+    // Global variable names are always preceded by a circumflex (^), local variables are not.
+    // NOTE: Reverted to this duplicated version because token.immediate only takes a literal, local_variable won't go
+    global_variable: $ => /[\^][a-zA-Z%][a-zA-Z0-9%]*/,
 
     unary_expression: $ => prec(2,
       choice(
@@ -105,44 +129,30 @@ module.exports = grammar({
           $._expression,
         ),
       ),
-      // prec(3,
-      //   optional(
-      //     ",\"",  // TODO: This appears at the end of write argument lists sometimes?
-      //   ),
-      // ),
     ),
 
     _write_outro: $ => ",\!",
 
-    // TODO: Make this an option of call instead
+    function: $ => $._alphanum,
+
+    // For calls to functions with slightly different syntax
+    call: $ => choice(
+      $._typical_call,
+      $._write_call,
+    ),
+
+    // Calls to write end in ,!
     _write_call: $ => seq(
-      $.call,
+      $._typical_call,
       $._write_outro,
     ),
 
-    function: $ => $._alphanum,
-
-    call: $ => seq(
+    _typical_call: $ => seq(
       $.function,
       $.arguments,
     ),
 
     _set: $ => /set|s/,
-
-    _variable: $ => choice(
-      $.local_array,
-      $.local_variable,
-      $.global_variable,
-    ),
-
-
-    // A Mumps variable name must begin with a letter or percent sign (%) and may be followed by letters, percent signs, or numbers.
-    // TODO: The underscore (_) and dollar sign ($) characters are not legal in variable names.
-    // https://stackoverflow.com/questions/32967395/exclude-characters-from-group-regex-while-still-looking-for-characters
-    local_variable: $ => /[a-zA-Z%][a-zA-Z0-9%]*/,
-
-    // Global variable names are always preceded by a circumflex (^), local variables are not.
-    global_variable: $ => /[\^][a-zA-Z%][a-zA-Z0-9%]*/,
 
     assignment: $ => seq(
       $._set,
@@ -171,7 +181,6 @@ module.exports = grammar({
     // TODO: x20 is space!
     // literal: $ => /(("[^"]*")|([\x20-\x7F^\,]+))+/
     literal: $ => /(("[^"]*")|([^\x00-\x20\x2c\x22\x2b\x2a\x2d]+))+/,
-
 
     newline: $ => /[\s]*\n/,
   }

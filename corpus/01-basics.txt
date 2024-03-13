@@ -20,6 +20,22 @@ Variable Assignment
   )
 )
 ==================
+Global Variables
+==================
+  set ^apples=8
+  set pears=7
+---
+(program
+  (assignment
+    (global_variable)
+    (literal)
+  )
+  (assignment
+    (local_variable)
+    (literal)
+  )
+)
+==================
 Comments
 ==================
   set apples=8
