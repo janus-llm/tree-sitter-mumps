@@ -231,6 +231,66 @@ module.exports = grammar({
     _numeric: $ => /[0-9]+/,
     _alphanum: $ => /[A-Za-z0-9]+/,
 
+    /*
+    Mumps variables are not typed. The basic data type is string although integer, floating point and
+    logical (true/false) operations can be performed on string variables if their contents are appropriate.
+    */
+    literal: $ => choice(
+      $.string,
+      $.integer,
+      $.float,
+      $.boolean,
+    ),
+
+    // TODO: I don't know if this is real
+    boolean: $ => choice(
+      "true",
+      "false",
+    ),
+
+    // Taken from the python tree-sitter
+    integer: _ => token(choice(
+      // seq(
+      //   choice('0x', '0X'),
+      //   repeat1(/_?[A-Fa-f0-9]+/),
+      //   optional(/[Ll]/),
+      // ),
+      // seq(
+      //   choice('0o', '0O'),
+      //   repeat1(/_?[0-7]+/),
+      //   optional(/[Ll]/),
+      // ),
+      // seq(
+      //   choice('0b', '0B'),
+      //   repeat1(/_?[0-1]+/),
+      //   optional(/[Ll]/),
+      // ),
+      seq(
+        repeat1(/[0-9]+_?/),
+        // choice(
+        //   optional(/[Ll]/), // long numbers
+        //   optional(/[jJ]/), // complex numbers
+        // ),
+      ),
+    )),
+
+    // Taken from the python tree-sitter
+    float: _ => {
+      const digits = repeat1(/[0-9]+_?/);
+      const exponent = seq(/[eE][\+-]?/, digits);
+
+      return token(seq(
+        choice(
+          seq(digits, '.', optional(digits), optional(exponent)),
+          seq(optional(digits), '.', digits, optional(exponent)),
+          seq(digits, exponent),
+        ),
+        optional(/[jJ]/),
+      ));
+    },
+
+    string: $ => /("[^"]*")+/,
+
     // Per docs: "the values in a string are, at a minimum, any ASCII character code between 32 to 127 (decimal) inclusive"
     // TODO: Currently excluding:
     // 2c: ,
@@ -241,7 +301,8 @@ module.exports = grammar({
     // 3d: =
     // 28: (
     // 29: )
-    literal: $ => /(("[^"]*")|([^\x00-\x20\x2c\x22\x2b\x2a\x2d\x3d\x28\x29]+))+/,
+    // NOTE: Just keeping this regex around for now!
+    // literal: $ => /(("[^"]*")|([^\x00-\x20\x2c\x22\x2b\x2a\x2d\x3d\x28\x29]+))+/,
 
     newline: $ => /[\s]*\n/,
   }
