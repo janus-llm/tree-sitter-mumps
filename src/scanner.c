@@ -52,23 +52,19 @@ bool tree_sitter_mumps_external_scanner_scan(void *payload, TSLexer *lexer,
   if (valid_symbols[LABEL] || valid_symbols[COMMENT]) {
     // If we're not at the 0th column, then this can't be a label or a comment
     if (lexer->get_column(lexer) == 0){
-      printf("COL 0, %c\n", lexer->lookahead);
       if (lexer->lookahead == ';') {
         lexer->result_symbol = COMMENT;
         // This entire line is a comment, advance until we hit \n
         scan_line(lexer);
-        printf("RETURNING COMMENT\n");
         return true;
       }
       else if ((isspace(lexer->lookahead) == 0)) {
         lexer->result_symbol = LABEL;
         // Advance through the entire label
         scan_label_text(lexer);
-        printf("RETURNING LABEL\n");
         return true;
       }
     }
   }
-  printf("RETURNING FALSE\n");
   return false;
 }
