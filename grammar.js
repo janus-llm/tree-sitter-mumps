@@ -4,7 +4,7 @@ module.exports = grammar({
   // We use src/scanner.c to handle context sensitive tokens, such as names
   externals: $ => [
     $._line_comment, // scanner.c checks for ; in column 0
-    $.label, // scanner.c checks for non-; non-ws in column 0
+    $._label, // scanner.c checks for non-; non-ws in column 0
   ],
 
   // extras: $ => [
@@ -23,9 +23,37 @@ module.exports = grammar({
       choice(
         $._simple_statement,
         $._compound_statement,
+        $.function_declaration  // TODO: Does this belong here?
         // $._blank_line, // NOTE: Causes odd behavior related to whitespace included in other tokens!
       ),
     ),
+
+    label: $ => prec(3,
+      $._label, // For ex. function declarations, we want to parse a label but not name it, here we want to name it
+    ),
+
+    function_declaration: $ => prec(2,
+      seq(
+        $.label,
+        $.parameters,
+      ),
+    ),
+
+    parameters: $ => seq(
+      "(",
+      optional(
+        $.parameter,
+      ),
+      repeat(
+        seq(
+          ",",
+          $.parameter,
+        ),
+      ),
+      ")",
+    ),
+        
+    parameter: $ => $._alphanum,  // TODO!
 
     comment: $ => choice(
       $._line_comment,
@@ -109,6 +137,7 @@ module.exports = grammar({
       $.unary_expression,
       $._identifier,
       $.literal,
+      $.call,
     ),
 
     _identifier: $ => choice(
@@ -183,17 +212,19 @@ module.exports = grammar({
       ),
     ),
 
-    arguments: $ => seq(
-      $._expression,
-      repeat(
-        seq(
-          ",",
-          $._expression,
+    arguments: $ => prec.left(
+      seq(
+        $._expression,
+        repeat(
+          seq(
+            ",",
+            $._expression,
+          ),
         ),
       ),
     ),
 
-    _write_read_outro: $ => ",\!",
+    write_read_outro: $ => ",\!",
 
     function: $ => seq(
       "$",
@@ -246,10 +277,12 @@ module.exports = grammar({
     ),
 
     // Calls to write end in ,!
-    _write_read_call: $ => seq(
-      $.command,
-      $.arguments,
-      $._write_read_outro,
+    _write_read_call: $ => prec(2,
+      seq(
+        $.command,
+        $.arguments,
+        $.write_read_outro,
+      ),
     ),
 
     _typical_call: $ => seq(

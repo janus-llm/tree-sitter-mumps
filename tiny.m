@@ -1,2 +1,2 @@
-  write "There were "
-  write "There were ",apples," apples, ",!
+fibonacci(n)
+  set a=4 

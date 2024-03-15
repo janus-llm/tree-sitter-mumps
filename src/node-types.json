@@ -12,6 +12,10 @@
           "named": true
         },
         {
+          "type": "call",
+          "named": true
+        },
+        {
           "type": "global_variable",
           "named": true
         },
@@ -43,6 +47,10 @@
           "named": true
         },
         {
+          "type": "call",
+          "named": true
+        },
+        {
           "type": "global_variable",
           "named": true
         },
@@ -71,6 +79,10 @@
       "types": [
         {
           "type": "binary_expression",
+          "named": true
+        },
+        {
+          "type": "call",
           "named": true
         },
         {
@@ -116,6 +128,10 @@
         {
           "type": "function",
           "named": true
+        },
+        {
+          "type": "write_read_outro",
+          "named": true
         }
       ]
     }
@@ -150,6 +166,10 @@
       "types": [
         {
           "type": "binary_expression",
+          "named": true
+        },
+        {
+          "type": "call",
           "named": true
         },
         {
@@ -196,6 +216,10 @@
           "named": true
         },
         {
+          "type": "function_declaration",
+          "named": true
+        },
+        {
           "type": "global_variable",
           "named": true
         },
@@ -218,6 +242,25 @@
     "type": "function",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "function_declaration",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "label",
+          "named": true
+        },
+        {
+          "type": "parameters",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "if_statement",
@@ -248,6 +291,10 @@
           "named": true
         },
         {
+          "type": "function_declaration",
+          "named": true
+        },
+        {
           "type": "if_statement",
           "named": true
         },
@@ -257,6 +304,11 @@
         }
       ]
     }
+  },
+  {
+    "type": "label",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "literal",
@@ -301,6 +353,26 @@
     }
   },
   {
+    "type": "parameter",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "parameters",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "parameter",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "program",
     "named": true,
     "fields": {},
@@ -325,6 +397,10 @@
           "named": true
         },
         {
+          "type": "function_declaration",
+          "named": true
+        },
+        {
           "type": "if_statement",
           "named": true
         },
@@ -345,6 +421,10 @@
       "types": [
         {
           "type": "binary_expression",
+          "named": true
+        },
+        {
+          "type": "call",
           "named": true
         },
         {
@@ -591,10 +671,6 @@
     "named": false
   },
   {
-    "type": "label",
-    "named": true
-  },
-  {
     "type": "local_variable",
     "named": true
   },
@@ -705,6 +781,10 @@
   {
     "type": "write",
     "named": false
+  },
+  {
+    "type": "write_read_outro",
+    "named": true
   },
   {
     "type": "x",

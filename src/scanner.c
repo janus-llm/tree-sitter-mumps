@@ -31,6 +31,15 @@ static void scan_non_whitespace(TSLexer * lexer)
     }
 }
 
+static void scan_label_text(TSLexer * lexer)
+{
+    // If we arrive at a '(' character, then this label is for a function definition, and we should stop parsing so that 
+    // we don't advance through its parameters.
+    while ((iswspace(lexer->lookahead) == 0) && (lexer->eof(lexer) == false) && (lexer->lookahead != '(')) {
+      advance(lexer);
+    }
+}
+
 void *tree_sitter_mumps_external_scanner_create() { return NULL; }
 void tree_sitter_mumps_external_scanner_destroy(void *p) {}
 void tree_sitter_mumps_external_scanner_reset(void *p) {}
@@ -54,7 +63,7 @@ bool tree_sitter_mumps_external_scanner_scan(void *payload, TSLexer *lexer,
       else if ((isspace(lexer->lookahead) == 0)) {
         lexer->result_symbol = LABEL;
         // Advance through the entire label
-        scan_non_whitespace(lexer);
+        scan_label_text(lexer);
         printf("RETURNING LABEL\n");
         return true;
       }
