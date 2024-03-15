@@ -2,9 +2,10 @@ module.exports = grammar({
   name: "mumps",
 
   // We use src/scanner.c to handle context sensitive tokens, such as names
-  // externals: $ => [
-  //   $.comment, // scanner.c checks for a ; in column 0
-  // ],
+  externals: $ => [
+    $._line_comment, // scanner.c checks for ; in column 0
+    $.label, // scanner.c checks for non-; non-ws in column 0
+  ],
 
   // extras: $ => [
   //   // $.comment,
@@ -15,30 +16,41 @@ module.exports = grammar({
   rules: {
     program: $ => repeat1($._statement),
 
-    _statement: $ => choice(
-      $._simple_statement,
-      $._compound_statement,
-      // $._blank_line, // NOTE: Causes odd behavior related to whitespace included in other tokens!
+    _statement: $ => seq(
+      optional(
+        $.label,
+      ),
+      choice(
+        $._simple_statement,
+        $._compound_statement,
+        // $._blank_line, // NOTE: Causes odd behavior related to whitespace included in other tokens!
+      ),
     ),
 
-    comment: _ => token(seq(';', /.*/)),
+    comment: $ => choice(
+      $._line_comment,
+      $._eol_comment,
+    ),
+
+    _eol_comment: $ => token(seq(';', /.*/)),
 
     postconditional: $ => seq(
       ":",
       $.conditional
     ),
 
-    conditional: $ => choice(
-      // prec(2,
-      //   seq(
-      //     $._expression,
-      //     "=",
-      //     $._expression,
-      //   ),
-      // ),
-      $._expression,
-    ),
-      
+    conditional: $ => prec(2,
+      choice(
+        // prec(2,
+        //   seq(
+        //     $._expression,
+        //     "=",
+        //     $._expression,
+        //   ),
+        // ),
+        $._expression,
+      ),
+    ), 
 
     // Individual statements
     _simple_statement: $ => seq(
@@ -59,15 +71,16 @@ module.exports = grammar({
       $.if_statement,
     ),
 
-    for_statement: $ => seq(
-      "for",
-      $._identifier,
-      "=",
-      $._loop_range,
-      "do",
-      choice(
-        $._statement,
-      // repeat1(
+    for_statement: $ => prec(2, seq(
+        "for",
+        $._identifier,
+        "=",
+        $._loop_range,
+        "do",
+        choice(
+          $._statement,
+        // repeat1(
+        ),
       ),
     ),
 
@@ -81,10 +94,12 @@ module.exports = grammar({
       ),
     ),
 
-    if_statement: $ => seq(
-      "if",
-      $.conditional,
-      $._statement,
+    if_statement: $ => prec(2,
+      seq(
+        "if",
+        $.conditional,
+        $._statement,
+      ),
     ),
 
     _expression: $ => choice(
@@ -178,34 +193,81 @@ module.exports = grammar({
       ),
     ),
 
-    _write_outro: $ => ",\!",
+    _write_read_outro: $ => ",\!",
 
-    function: $ => $._alphanum,
+    function: $ => seq(
+      "$",
+      $._alphanum,
+    ),
 
     // For calls to functions with slightly different syntax
     call: $ => choice(
       $._typical_call,
-      $._write_call,
+      $._write_read_call,
+      $.command,
+    ),
+
+    command: $ => prec.left(
+      seq(
+        choice(
+          // TODO: Not comprehensive!
+          "b", "break", "b",
+          "c", "close", "c",
+          "d", "do",
+          "e", "else",
+          "f", "for",
+          "g", "goto",
+          "h", "halt",
+          "h", "hang",
+          "i", "if",
+          "j", "job",
+          "l", "lock",
+          "k", "kill",
+          "m", "merge",
+          "n", "new",
+          "o", "open",
+          "q", "quit",
+          "r", "read",
+          // "s", "set",  // Excluding, since this is "assignment"
+          "tc", "tcommit",
+          "tre", "trestart", 
+          "tro", "trollback",
+          "ts", "tstart",
+          "u", "use",
+          "v", "view",
+          "w", "write",
+          "x", "xecute",
+          "z",
+        ),
+        optional(
+          $.arguments,
+        ),
+      ),
     ),
 
     // Calls to write end in ,!
-    _write_call: $ => seq(
-      $._typical_call,
-      $._write_outro,
+    _write_read_call: $ => seq(
+      $.command,
+      $.arguments,
+      $._write_read_outro,
     ),
 
     _typical_call: $ => seq(
       $.function,
+      "(",
       $.arguments,
+      ")",
     ),
 
     _set: $ => /set|s/,
 
-    assignment: $ => seq(
-      $._set,
-      $._variable,
-      "=",
-      $._expression,
+    assignment: $ => prec(2, 
+      seq(
+        $._set,
+        $._variable,
+        "=",
+        $._expression,
+      ),
     ),
 
     // Boy this feels pretty hacky

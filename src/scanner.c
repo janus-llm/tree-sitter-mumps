@@ -4,6 +4,7 @@
 
 enum TokenType {
   COMMENT,
+  LABEL,
 };
 
 static void advance(TSLexer * lexer)
@@ -16,6 +17,20 @@ static void skip(TSLexer * lexer)
     lexer->advance(lexer, true);
 }
 
+static void scan_line(TSLexer * lexer)
+{
+    while ((lexer->lookahead != '\n') && (lexer->eof(lexer) == false)) {
+      advance(lexer);
+    }
+}
+
+static void scan_non_whitespace(TSLexer * lexer)
+{
+    while ((iswspace(lexer->lookahead) == 0) && (lexer->eof(lexer) == false)) {
+      advance(lexer);
+    }
+}
+
 void *tree_sitter_mumps_external_scanner_create() { return NULL; }
 void tree_sitter_mumps_external_scanner_destroy(void *p) {}
 void tree_sitter_mumps_external_scanner_reset(void *p) {}
@@ -24,25 +39,27 @@ void tree_sitter_mumps_external_scanner_deserialize(void *p, const char *b, unsi
 
 bool tree_sitter_mumps_external_scanner_scan(void *payload, TSLexer *lexer,
                                             const bool *valid_symbols) {
-  // printf("In scanner.c...!\n");                                            
-  bool eof = lexer->eof(lexer);
-
-  // NAME or COMMENT
-  if (valid_symbols[COMMENT]) {
-    if (lexer->lookahead == ';' && lexer->get_column(lexer) == 0) {
-      lexer->result_symbol = COMMENT;
-      // printf("Found a COMMENT!\n");
-      while (lexer->lookahead != '\n') { // Should we try to find the actual end of the text?
-        advance(lexer);
+  // NAMEs and COMMENTs together, since they both check column 0
+  if (valid_symbols[LABEL] || valid_symbols[COMMENT]) {
+    // If we're not at the 0th column, then this can't be a label or a comment
+    if (lexer->get_column(lexer) == 0){
+      printf("COL 0, %c\n", lexer->lookahead);
+      if (lexer->lookahead == ';') {
+        lexer->result_symbol = COMMENT;
+        // This entire line is a comment, advance until we hit \n
+        scan_line(lexer);
+        printf("RETURNING COMMENT\n");
+        return true;
       }
-      return true;
+      else if ((isspace(lexer->lookahead) == 0)) {
+        lexer->result_symbol = LABEL;
+        // Advance through the entire label
+        scan_non_whitespace(lexer);
+        printf("RETURNING LABEL\n");
+        return true;
+      }
     }
-    else {
-      // printf("Nope, not a COMMENT.\n");
-      return false;
-    }
-  }  
-  else {
-    return false;
   }
+  printf("RETURNING FALSE\n");
+  return false;
 }
