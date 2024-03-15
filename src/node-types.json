@@ -12,7 +12,15 @@
           "named": true
         },
         {
+          "type": "boolean",
+          "named": true
+        },
+        {
           "type": "call",
+          "named": true
+        },
+        {
+          "type": "float",
           "named": true
         },
         {
@@ -20,7 +28,7 @@
           "named": true
         },
         {
-          "type": "literal",
+          "type": "integer",
           "named": true
         },
         {
@@ -29,6 +37,10 @@
         },
         {
           "type": "local_variable",
+          "named": true
+        },
+        {
+          "type": "string",
           "named": true
         },
         {
@@ -51,7 +63,15 @@
           "named": true
         },
         {
+          "type": "boolean",
+          "named": true
+        },
+        {
           "type": "call",
+          "named": true
+        },
+        {
+          "type": "float",
           "named": true
         },
         {
@@ -59,7 +79,7 @@
           "named": true
         },
         {
-          "type": "literal",
+          "type": "integer",
           "named": true
         },
         {
@@ -68,6 +88,10 @@
         },
         {
           "type": "local_variable",
+          "named": true
+        },
+        {
+          "type": "string",
           "named": true
         },
         {
@@ -90,7 +114,15 @@
           "named": true
         },
         {
+          "type": "boolean",
+          "named": true
+        },
+        {
           "type": "call",
+          "named": true
+        },
+        {
+          "type": "float",
           "named": true
         },
         {
@@ -98,7 +130,7 @@
           "named": true
         },
         {
-          "type": "literal",
+          "type": "integer",
           "named": true
         },
         {
@@ -107,6 +139,10 @@
         },
         {
           "type": "local_variable",
+          "named": true
+        },
+        {
+          "type": "string",
           "named": true
         },
         {
@@ -129,7 +165,15 @@
           "named": true
         },
         {
+          "type": "boolean",
+          "named": true
+        },
+        {
           "type": "call",
+          "named": true
+        },
+        {
+          "type": "float",
           "named": true
         },
         {
@@ -137,7 +181,7 @@
           "named": true
         },
         {
-          "type": "literal",
+          "type": "integer",
           "named": true
         },
         {
@@ -146,6 +190,10 @@
         },
         {
           "type": "local_variable",
+          "named": true
+        },
+        {
+          "type": "string",
           "named": true
         },
         {
@@ -178,10 +226,6 @@
         },
         {
           "type": "function",
-          "named": true
-        },
-        {
-          "type": "write_read_outro",
           "named": true
         }
       ]
@@ -220,7 +264,15 @@
           "named": true
         },
         {
+          "type": "boolean",
+          "named": true
+        },
+        {
           "type": "call",
+          "named": true
+        },
+        {
+          "type": "float",
           "named": true
         },
         {
@@ -228,7 +280,7 @@
           "named": true
         },
         {
-          "type": "literal",
+          "type": "integer",
           "named": true
         },
         {
@@ -237,6 +289,10 @@
         },
         {
           "type": "local_variable",
+          "named": true
+        },
+        {
+          "type": "string",
           "named": true
         },
         {
@@ -370,7 +426,7 @@
     "fields": {}
   },
   {
-    "type": "literal",
+    "type": "local_array",
     "named": true,
     "fields": {},
     "children": {
@@ -378,42 +434,16 @@
       "required": true,
       "types": [
         {
-          "type": "boolean",
-          "named": true
-        },
-        {
-          "type": "float",
-          "named": true
-        },
-        {
-          "type": "integer",
-          "named": true
-        },
-        {
-          "type": "string",
+          "type": "array_index",
           "named": true
         }
       ]
     }
   },
   {
-    "type": "local_array",
+    "type": "local_variable",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "array_index",
-          "named": true
-        },
-        {
-          "type": "local_variable",
-          "named": true
-        }
-      ]
-    }
+    "fields": {}
   },
   {
     "type": "parameter",
@@ -487,7 +517,15 @@
           "named": true
         },
         {
+          "type": "boolean",
+          "named": true
+        },
+        {
           "type": "call",
+          "named": true
+        },
+        {
+          "type": "float",
           "named": true
         },
         {
@@ -495,7 +533,7 @@
           "named": true
         },
         {
-          "type": "literal",
+          "type": "integer",
           "named": true
         },
         {
@@ -504,6 +542,10 @@
         },
         {
           "type": "local_variable",
+          "named": true
+        },
+        {
+          "type": "string",
           "named": true
         },
         {
@@ -738,10 +780,6 @@
     "named": false
   },
   {
-    "type": "local_variable",
-    "named": true
-  },
-  {
     "type": "lock",
     "named": false
   },
@@ -848,10 +886,6 @@
   {
     "type": "write",
     "named": false
-  },
-  {
-    "type": "write_read_outro",
-    "named": true
   },
   {
     "type": "x",

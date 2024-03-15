@@ -307,7 +307,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "literal"
+          "name": "_literal"
         },
         {
           "type": "SYMBOL",
@@ -346,7 +346,7 @@
       "members": [
         {
           "type": "SYMBOL",
-          "name": "local_variable"
+          "name": "_variable_name"
         },
         {
           "type": "SYMBOL",
@@ -388,9 +388,13 @@
         }
       ]
     },
-    "local_variable": {
+    "_variable_name": {
       "type": "PATTERN",
       "value": "[a-zA-Z%][a-zA-Z0-9%]*"
+    },
+    "local_variable": {
+      "type": "SYMBOL",
+      "name": "_variable_name"
     },
     "global_variable": {
       "type": "PATTERN",
@@ -994,7 +998,7 @@
         ]
       }
     },
-    "write_read_outro": {
+    "_write_read_outro": {
       "type": "STRING",
       "value": ",!"
     },
@@ -1282,7 +1286,7 @@
           },
           {
             "type": "SYMBOL",
-            "name": "write_read_outro"
+            "name": "_write_read_outro"
           }
         ]
       }
@@ -1345,7 +1349,7 @@
       "type": "PATTERN",
       "value": "[A-Za-z0-9]+"
     },
-    "literal": {
+    "_literal": {
       "type": "CHOICE",
       "members": [
         {

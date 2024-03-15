@@ -155,7 +155,7 @@ module.exports = grammar({
 
     // Boy this feels pretty hacky
     local_array: $ => seq(
-      $.local_variable,
+      $._variable_name,
       $.array_index,
     ),
 
@@ -181,7 +181,9 @@ module.exports = grammar({
     // A Mumps variable name must begin with a letter or percent sign (%) and may be followed by letters, percent signs, or numbers.
     // TODO: The underscore (_) and dollar sign ($) characters are not legal in variable names.
     // https://stackoverflow.com/questions/32967395/exclude-characters-from-group-regex-while-still-looking-for-characters
-    local_variable: $ => /[a-zA-Z%][a-zA-Z0-9%]*/,
+    _variable_name: $ => /[a-zA-Z%][a-zA-Z0-9%]*/,
+
+    local_variable: $ => $._variable_name,
 
     // Global variable names are always preceded by a circumflex (^), local variables are not.
     // NOTE: Reverted to this duplicated version because token.immediate only takes a literal, local_variable won't go
