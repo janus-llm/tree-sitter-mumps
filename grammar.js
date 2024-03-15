@@ -136,28 +136,46 @@ module.exports = grammar({
       ),
       $.unary_expression,
       $._identifier,
-      $.literal,
+      $._literal,
       $.call,
     ),
 
     _identifier: $ => choice(
       $._variable,
-      // $._array,
+      $._array, // TODO!
       //$.function_name,
     ),
 
     _array: $ => prec(2,
       choice(
-        prec(2,
-          $.local_array,
-        ),
+        $.local_array,
         // $.global_array,
       ),
+    ),
+
+    // Boy this feels pretty hacky
+    local_array: $ => seq(
+      $.local_variable,
+      $.array_index,
+    ),
+
+    array_index: $ => seq(
+      "(",
+      $._expression, // Probably this will just be an integer index, but could be more complicated
+      // repeat1( // >= 1 Because my impression is you have to provide an index
+      //   seq(
+      //     ",",
+      //     $._expression,
+      //   ),
+      // ),
+      ")",
     ),
 
     _variable: $ => choice(
       $.local_variable,
       $.global_variable,
+      $.local_array,
+      // $.global_array,
     ),
 
     // A Mumps variable name must begin with a letter or percent sign (%) and may be followed by letters, percent signs, or numbers.
@@ -224,7 +242,7 @@ module.exports = grammar({
       ),
     ),
 
-    write_read_outro: $ => ",\!",
+    _write_read_outro: $ => ",\!",
 
     function: $ => seq(
       "$",
@@ -281,7 +299,7 @@ module.exports = grammar({
       seq(
         $.command,
         $.arguments,
-        $.write_read_outro,
+        $._write_read_outro,
       ),
     ),
 
@@ -303,26 +321,6 @@ module.exports = grammar({
       ),
     ),
 
-    // Boy this feels pretty hacky
-    local_array: $ => seq(
-      // /[a-zA-Z0-9]+\([0-9]+\)/,
-      $.local_variable,
-      // $.array_index,
-    ),
-
-    // array_index: $ => "(1)",
-    //   seq(
-    //   "(",
-    //   $._expression, // Probably this will just be an integer index, but could be more complicated
-    //   // repeat1( // >= 1 Because my impression is you have to provide an index
-    //   //   seq(
-    //   //     ",",
-    //   //     $._expression,
-    //   //   ),
-    //   // ),
-    //   ")",
-    // ),
-
     _numeric: $ => /[0-9]+/,
     _alphanum: $ => /[A-Za-z0-9]+/,
 
@@ -330,7 +328,7 @@ module.exports = grammar({
     Mumps variables are not typed. The basic data type is string although integer, floating point and
     logical (true/false) operations can be performed on string variables if their contents are appropriate.
     */
-    literal: $ => choice(
+    _literal: $ => choice(
       $.string,
       $.integer,
       $.float,
@@ -397,7 +395,7 @@ module.exports = grammar({
     // 28: (
     // 29: )
     // NOTE: Just keeping this regex around for now!
-    // literal: $ => /(("[^"]*")|([^\x00-\x20\x2c\x22\x2b\x2a\x2d\x3d\x28\x29]+))+/,
+    // _literal: $ => /(("[^"]*")|([^\x00-\x20\x2c\x22\x2b\x2a\x2d\x3d\x28\x29]+))+/,
 
     newline: $ => /[\s]*\n/,
   }

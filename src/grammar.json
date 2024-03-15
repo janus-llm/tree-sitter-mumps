@@ -321,6 +321,10 @@
         {
           "type": "SYMBOL",
           "name": "_variable"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_array"
         }
       ]
     },
@@ -331,15 +335,41 @@
         "type": "CHOICE",
         "members": [
           {
-            "type": "PREC",
-            "value": 2,
-            "content": {
-              "type": "SYMBOL",
-              "name": "local_array"
-            }
+            "type": "SYMBOL",
+            "name": "local_array"
           }
         ]
       }
+    },
+    "local_array": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "local_variable"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "array_index"
+        }
+      ]
+    },
+    "array_index": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "("
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_expression"
+        },
+        {
+          "type": "STRING",
+          "value": ")"
+        }
+      ]
     },
     "_variable": {
       "type": "CHOICE",
@@ -351,6 +381,10 @@
         {
           "type": "SYMBOL",
           "name": "global_variable"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "local_array"
         }
       ]
     },
@@ -1302,15 +1336,6 @@
           }
         ]
       }
-    },
-    "local_array": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "local_variable"
-        }
-      ]
     },
     "_numeric": {
       "type": "PATTERN",
