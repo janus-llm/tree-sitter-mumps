@@ -107,7 +107,6 @@ module.exports = grammar({
         "do",
         choice(
           $._statement,
-        // repeat1(
         ),
       ),
     ),
@@ -122,9 +121,9 @@ module.exports = grammar({
       ),
     ),
 
-    if_statement: $ => prec(2,
+    if_statement: $ => prec.left(3,
       seq(
-        "if",
+        /if|i/,
         $.conditional,
         $._statement,
       ),
@@ -262,15 +261,15 @@ module.exports = grammar({
       seq(
         choice(
           // TODO: Not comprehensive!
-          "b", "break", "b",
-          "c", "close", "c",
+          "b", "break",
+          "c", "close",
           "d", "do",
-          "e", "else",
-          "f", "for",
+          // "e", "else",
+          // "f", "for",
           "g", "goto",
           "h", "halt",
           "h", "hang",
-          "i", "if",
+          // "i", "if",
           "j", "job",
           "l", "lock",
           "k", "kill",
@@ -279,7 +278,7 @@ module.exports = grammar({
           "o", "open",
           "q", "quit",
           "r", "read",
-          // "s", "set",  // Excluding, since this is "assignment"
+          // "s", "set", 
           "tc", "tcommit",
           "tre", "trestart", 
           "tro", "trollback",
@@ -290,9 +289,8 @@ module.exports = grammar({
           "x", "xecute",
           "z",
         ),
-        optional(
-          $.arguments,
-        ),
+        // $.arguments,
+        "0",
       ),
     ),
 

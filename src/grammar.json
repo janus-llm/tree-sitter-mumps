@@ -266,14 +266,14 @@
       ]
     },
     "if_statement": {
-      "type": "PREC",
-      "value": 2,
+      "type": "PREC_LEFT",
+      "value": 3,
       "content": {
         "type": "SEQ",
         "members": [
           {
-            "type": "STRING",
-            "value": "if"
+            "type": "PATTERN",
+            "value": "if|i"
           },
           {
             "type": "SYMBOL",
@@ -1051,10 +1051,6 @@
               },
               {
                 "type": "STRING",
-                "value": "b"
-              },
-              {
-                "type": "STRING",
                 "value": "c"
               },
               {
@@ -1063,31 +1059,11 @@
               },
               {
                 "type": "STRING",
-                "value": "c"
-              },
-              {
-                "type": "STRING",
                 "value": "d"
               },
               {
                 "type": "STRING",
                 "value": "do"
-              },
-              {
-                "type": "STRING",
-                "value": "e"
-              },
-              {
-                "type": "STRING",
-                "value": "else"
-              },
-              {
-                "type": "STRING",
-                "value": "f"
-              },
-              {
-                "type": "STRING",
-                "value": "for"
               },
               {
                 "type": "STRING",
@@ -1112,14 +1088,6 @@
               {
                 "type": "STRING",
                 "value": "hang"
-              },
-              {
-                "type": "STRING",
-                "value": "i"
-              },
-              {
-                "type": "STRING",
-                "value": "if"
               },
               {
                 "type": "STRING",
@@ -1256,16 +1224,8 @@
             ]
           },
           {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "SYMBOL",
-                "name": "arguments"
-              },
-              {
-                "type": "BLANK"
-              }
-            ]
+            "type": "STRING",
+            "value": "0"
           }
         ]
       }
