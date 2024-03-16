@@ -8,7 +8,7 @@ Variable Assignment
 (program
   (assignment
     (local_variable)
-    (literal)
+    (integer)
   )
   (assignment
     (local_variable)
@@ -16,7 +16,7 @@ Variable Assignment
   )
   (assignment
     (local_variable)
-    (literal)
+    (string)
   )
 )
 ==================
@@ -28,11 +28,11 @@ Global Variables
 (program
   (assignment
     (global_variable)
-    (literal)
+    (integer)
   )
   (assignment
     (local_variable)
-    (literal)
+    (integer)
   )
 )
 ==================
@@ -45,12 +45,12 @@ Comments
 (program
   (assignment
     (local_variable)
-    (literal)
+    (integer)
   )
   (comment)
   (assignment
     (local_variable)
-    (literal)
+    (integer)
   )
   (comment)
 )
@@ -60,13 +60,9 @@ Call Write
   write "There were 8",!
 ---
 (program
-  (call
-    (function)
-    (arguments
-      (literal)
-    )
-  )
-)
+  (command
+  (arguments
+    (string))))
 ==================
 Arithmetic
 ==================
@@ -79,13 +75,13 @@ Arithmetic
 (program
   (assignment
     (local_variable)
-    (literal)
+    (integer)
   )
   (assignment
     (local_variable)            
     (binary_expression
-      (literal)
-      (literal)
+      (integer)
+      (integer)
     )
   )
   (assignment
@@ -97,7 +93,7 @@ Arithmetic
   )
   (assignment
     (local_variable)
-    (literal)
+    (integer)
   )
   (assignment
     (local_variable)            
@@ -116,38 +112,12 @@ Conditionals
 (program
   (assignment
     (local_variable)
-    (literal))
+    (integer))
   (if_statement
     (conditional
       (binary_expression
         (local_variable)
-        (literal)))
+        (integer)))
     (assignment
       (local_variable)
-      (literal))))
-==================
-1d Arrays
-==================
-; unidimensional array
-
-  write "Approaching the solar system:",!
-
-  set planets()="Mercury"
-  set planets()="Venus"
-  set planets()="Earth"
----
-(program
-  (comment)
-  (call
-    (function)
-    (arguments
-      (literal)))
-  (assignment
-    (local_array)
-    (literal))
-  (assignment
-    (local_array)
-    (literal))
-  (assignment
-    (local_array)
-    (literal))
+      (integer))))

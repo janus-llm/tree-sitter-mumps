@@ -1,0 +1,25 @@
+==================
+1d Arrays
+==================
+; unidimensional array
+
+  write "Approaching the solar system:",!
+
+  set planets()="Mercury"
+  set planets()="Venus"
+  set planets()="Earth"
+---
+(program
+  (comment)
+  (command
+    (arguments
+      (string)))
+  (assignment
+    (local_array)
+    (string))
+  (assignment
+    (local_array)
+    (string))
+  (assignment
+    (local_array)
+    (string))

@@ -1,3 +1,6 @@
-  q 0
-;s sldkfjs;djf
-  if id="" q 0
+  write "Approaching the solar system:",!
+
+  set planets()="Mercury"
+  set planets()="Venus"
+  set planets()="Earth"
+

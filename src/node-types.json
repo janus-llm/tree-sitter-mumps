@@ -221,10 +221,6 @@
           "named": true
         },
         {
-          "type": "command",
-          "named": true
-        },
-        {
           "type": "function",
           "named": true
         }
@@ -234,7 +230,17 @@
   {
     "type": "command",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "arguments",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "comment",
@@ -305,7 +311,7 @@
           "named": true
         },
         {
-          "type": "call",
+          "type": "command",
           "named": true
         },
         {
@@ -317,7 +323,7 @@
           "named": true
         },
         {
-          "type": "function_declaration",
+          "type": "function_definition",
           "named": true
         },
         {
@@ -349,17 +355,13 @@
     "fields": {}
   },
   {
-    "type": "function_declaration",
+    "type": "function_definition",
     "named": true,
     "fields": {},
     "children": {
-      "multiple": true,
+      "multiple": false,
       "required": true,
       "types": [
-        {
-          "type": "label",
-          "named": true
-        },
         {
           "type": "parameters",
           "named": true
@@ -380,7 +382,7 @@
           "named": true
         },
         {
-          "type": "call",
+          "type": "command",
           "named": true
         },
         {
@@ -396,7 +398,7 @@
           "named": true
         },
         {
-          "type": "function_declaration",
+          "type": "function_definition",
           "named": true
         },
         {
@@ -468,7 +470,7 @@
           "named": true
         },
         {
-          "type": "call",
+          "type": "command",
           "named": true
         },
         {
@@ -480,7 +482,7 @@
           "named": true
         },
         {
-          "type": "function_declaration",
+          "type": "function_definition",
           "named": true
         },
         {
@@ -626,10 +628,6 @@
     "named": false
   },
   {
-    "type": "0",
-    "named": false
-  },
-  {
     "type": ":",
     "named": false
   },
@@ -683,10 +681,6 @@
   },
   {
     "type": "close",
-    "named": false
-  },
-  {
-    "type": "d",
     "named": false
   },
   {
@@ -790,14 +784,6 @@
     "named": false
   },
   {
-    "type": "r",
-    "named": false
-  },
-  {
-    "type": "read",
-    "named": false
-  },
-  {
     "type": "string",
     "named": true
   },
@@ -851,10 +837,6 @@
   },
   {
     "type": "view",
-    "named": false
-  },
-  {
-    "type": "w",
     "named": false
   },
   {

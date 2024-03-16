@@ -7,12 +7,6 @@ module.exports = grammar({
     $._label, // scanner.c checks for non-; non-ws in column 0
   ],
 
-  // extras: $ => [
-  //   // $.comment,
-  //   /[\s\f\uFEFF\u2060\u200B]|\r?\n/,
-  //   $.newline,
-  // ],
-
   rules: {
     program: $ => repeat1($._statement),
 
@@ -23,23 +17,130 @@ module.exports = grammar({
       choice(
         $._simple_statement,
         $._compound_statement,
-        $.function_declaration  // TODO: Does this belong here?
-        // $._blank_line, // NOTE: Causes odd behavior related to whitespace included in other tokens!
+      ),
+    ),
+
+    // Individual statements
+    _simple_statement: $ => seq(
+      // TODO: A simple statement can have a conditional!
+      // optional(
+      //   $.conditional
+      // ),
+      choice(
+        $.command,
+        $.comment,
+        $.assignment,
+        // $.call,  // TODO: my understanding is that function calls are only used in expressions, never as an entire statement
+      ),
+    ),
+
+    // Multi-part statements
+    _compound_statement: $ => choice(
+      $.for_statement,
+      $.if_statement,
+      $.function_definition,
+    ),
+
+    command: $ => prec.left(
+      choice(
+        $._write_read_call,
+        seq(
+          choice(
+            // TODO: Not comprehensive!
+            "b", "break",
+            "c", "close",
+            // "d", "do",
+            // "e", "else",  // special case (if_statement)
+            // "f", "for",  // special case (for_statement)
+            "g", "goto",
+            "h", "halt",
+            "h", "hang",
+            // "i", "if",  // special case (if_statement)
+            "j", "job",
+            "l", "lock",
+            "k", "kill",
+            "m", "merge",
+            "n", "new",
+            "o", "open",
+            "q", "quit",
+            // "r", "read",  // special case (_write_read_call)
+            // "s", "set",  // special case (assignment) 
+            "tc", "tcommit",
+            "tre", "trestart", 
+            "tro", "trollback",
+            "ts", "tstart",
+            "u", "use",
+            "v", "view",
+            // "w", "write", // special case (_write_read_call)
+            "x", "xecute",
+            "z",
+          ),
+          $.arguments,
+          // "0",
+        ),
+      ),
+    ),
+
+    comment: $ => choice(
+      $._line_comment,
+      $._eol_comment,
+    ),
+
+    assignment: $ => prec(2, 
+      seq(
+        $._set,
+        $._variable,
+        "=",
+        $._expression,
+      ),
+    ),
+
+    for_statement: $ => prec(2, seq(
+        "for",
+        $._identifier,
+        "=",
+        $._loop_range,
+        "do",
+        choice(
+          $._statement,
+        ),
+      ),
+    ),
+
+    if_statement: $ => prec.left(3,
+      seq(
+        /if|i/,
+        $.conditional,
+        $._statement,
+      ),
+    ),
+
+    function_definition: $ => prec(2,
+      seq(
+        $._label,
+        $.parameters,
+        // $.body
+      ),
+    ),
+
+    arguments: $ => prec.left(
+      seq(
+        $._expression,
+        repeat(
+          seq(
+            ",",
+            $._expression,
+          ),
+        ),
       ),
     ),
 
     label: $ => prec(3,
-      $._label, // For ex. function declarations, we want to parse a label but not name it, here we want to name it
-    ),
-
-    function_declaration: $ => prec(2,
-      seq(
-        $.label,
-        $.parameters,
-      ),
+      $._label, // This just allows for cases like function declarations where we want to parse a label and not name it
     ),
 
     parameters: $ => seq(
+      // In the no params case functions still look like: <function_name()>
       "(",
       optional(
         $.parameter,
@@ -55,11 +156,6 @@ module.exports = grammar({
         
     parameter: $ => $._alphanum,  // TODO!
 
-    comment: $ => choice(
-      $._line_comment,
-      $._eol_comment,
-    ),
-
     _eol_comment: $ => token(seq(';', /.*/)),
 
     postconditional: $ => seq(
@@ -69,47 +165,9 @@ module.exports = grammar({
 
     conditional: $ => prec(2,
       choice(
-        // prec(2,
-        //   seq(
-        //     $._expression,
-        //     "=",
-        //     $._expression,
-        //   ),
-        // ),
         $._expression,
       ),
     ), 
-
-    // Individual statements
-    _simple_statement: $ => seq(
-      // TODO: A simple statement can have a conditional!
-      // optional(
-      //   $.conditional
-      // ),
-      choice(
-        $.assignment,
-        $.call,
-        $.comment,
-      ),
-    ),
-
-    // Multi-part statements
-    _compound_statement: $ => choice(
-      $.for_statement,
-      $.if_statement,
-    ),
-
-    for_statement: $ => prec(2, seq(
-        "for",
-        $._identifier,
-        "=",
-        $._loop_range,
-        "do",
-        choice(
-          $._statement,
-        ),
-      ),
-    ),
 
     _loop_range: $ => seq(  // TODO: What is this called?
       $._variable,
@@ -118,14 +176,6 @@ module.exports = grammar({
           ":",
           $._variable,
         ),
-      ),
-    ),
-
-    if_statement: $ => prec.left(3,
-      seq(
-        /if|i/,
-        $.conditional,
-        $._statement,
       ),
     ),
 
@@ -231,17 +281,31 @@ module.exports = grammar({
       ),
     ),
 
-    arguments: $ => prec.left(
-      seq(
-        $._expression,
-        repeat(
-          seq(
-            ",",
-            $._expression,
-          ),
-        ),
-      ),
-    ),
+    // binary_operator: $ => {
+    //   const table = [
+    //     [prec.left, '+', PREC.plus],
+    //     [prec.left, '-', PREC.plus],
+    //     [prec.left, '*', PREC.times],
+    //     [prec.left, '@', PREC.times],
+    //     [prec.left, '/', PREC.times],
+    //     [prec.left, '%', PREC.times],
+    //     [prec.left, '//', PREC.times],
+    //     [prec.right, '**', PREC.power],
+    //     [prec.left, '|', PREC.bitwise_or],
+    //     [prec.left, '&', PREC.bitwise_and],
+    //     [prec.left, '^', PREC.xor],
+    //     [prec.left, '<<', PREC.shift],
+    //     [prec.left, '>>', PREC.shift],
+    //   ];
+
+    //   // @ts-ignore
+    //   return choice(...table.map(([fn, operator, precedence]) => fn(precedence, seq(
+    //     field('left', $.primary_expression),
+    //     // @ts-ignore
+    //     field('operator', operator),
+    //     field('right', $.primary_expression),
+    //   ))));
+    // },
 
     _write_read_outro: $ => ",\!",
 
@@ -254,50 +318,14 @@ module.exports = grammar({
     call: $ => choice(
       $._typical_call,
       $._write_read_call,
-      $.command,
-    ),
-
-    command: $ => prec.left(
-      seq(
-        choice(
-          // TODO: Not comprehensive!
-          "b", "break",
-          "c", "close",
-          "d", "do",
-          // "e", "else",
-          // "f", "for",
-          "g", "goto",
-          "h", "halt",
-          "h", "hang",
-          // "i", "if",
-          "j", "job",
-          "l", "lock",
-          "k", "kill",
-          "m", "merge",
-          "n", "new",
-          "o", "open",
-          "q", "quit",
-          "r", "read",
-          // "s", "set", 
-          "tc", "tcommit",
-          "tre", "trestart", 
-          "tro", "trollback",
-          "ts", "tstart",
-          "u", "use",
-          "v", "view",
-          "w", "write",
-          "x", "xecute",
-          "z",
-        ),
-        // $.arguments,
-        "0",
-      ),
+      // $.command,
     ),
 
     // Calls to write end in ,!
     _write_read_call: $ => prec(2,
       seq(
-        $.command,
+        // /write|w|read|r/,
+        "write",
         $.arguments,
         $._write_read_outro,
       ),
@@ -311,15 +339,6 @@ module.exports = grammar({
     ),
 
     _set: $ => /set|s/,
-
-    assignment: $ => prec(2, 
-      seq(
-        $._set,
-        $._variable,
-        "=",
-        $._expression,
-      ),
-    ),
 
     _numeric: $ => /[0-9]+/,
     _alphanum: $ => /[A-Za-z0-9]+/,
@@ -342,7 +361,7 @@ module.exports = grammar({
     ),
 
     // Taken from the python tree-sitter
-    integer: _ => token(choice(
+    integer: $ => token(choice(
       // seq(
       //   choice('0x', '0X'),
       //   repeat1(/_?[A-Fa-f0-9]+/),
@@ -368,7 +387,7 @@ module.exports = grammar({
     )),
 
     // Taken from the python tree-sitter
-    float: _ => {
+    float: $ => {
       const digits = repeat1(/[0-9]+_?/);
       const exponent = seq(/[eE][\+-]?/, digits);
 

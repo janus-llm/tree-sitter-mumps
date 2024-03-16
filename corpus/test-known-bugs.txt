@@ -1,0 +1,25 @@
+==================
+BUG: Expressions With Single Letter Commands
+==================
+; here are the last lines of this story
+  write a_e_f,!
+  write d_e_f,!
+---
+(program
+  (comment)
+  (call
+    (command)
+      (arguments)
+        (binary_expression)
+          (binary_expression)
+            (local_variable)
+            (local_variable)
+          (local_variable)
+  (call
+    (command)
+      (arguments)
+        (binary_expression)
+          (binary_expression)
+            (local_variable)
+            (local_variable)
+          (local_variable)

@@ -36,3 +36,6 @@
 
   write "Now there are ",total," fruits in the basket,",!
   write "the average fruit value is ",average,".",!
+
+
+
