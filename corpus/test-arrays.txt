@@ -5,9 +5,9 @@
 
   write "Approaching the solar system:",!
 
-  set planets()="Mercury"
-  set planets()="Venus"
-  set planets()="Earth"
+  set planets(1)="Mercury"
+  set planets(2)="Venus"
+  set planets(3)="Earth"
 ---
 (program
   (comment)
@@ -15,11 +15,17 @@
     (arguments
       (string)))
   (assignment
-    (local_array)
+    (local_array
+      (array_index
+        (integer)))
     (string))
   (assignment
-    (local_array)
+    (local_array
+      (array_index
+        (integer)))
     (string))
   (assignment
-    (local_array)
-    (string))
+    (local_array
+      (array_index
+        (integer)))
+    (string)))

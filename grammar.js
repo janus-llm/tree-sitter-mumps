@@ -211,12 +211,12 @@ module.exports = grammar({
     array_index: $ => seq(
       "(",
       $._expression, // Probably this will just be an integer index, but could be more complicated
-      // repeat1( // >= 1 Because my impression is you have to provide an index
-      //   seq(
-      //     ",",
-      //     $._expression,
-      //   ),
-      // ),
+      repeat(  
+        seq(
+          ",",
+          $._expression,
+        ),
+      ),
       ")",
     ),
 
@@ -324,8 +324,7 @@ module.exports = grammar({
     // Calls to write end in ,!
     _write_read_call: $ => prec(2,
       seq(
-        // /write|w|read|r/,
-        "write",
+        /write|w|read|r/,
         $.arguments,
         $._write_read_outro,
       ),
@@ -360,33 +359,13 @@ module.exports = grammar({
       "false",
     ),
 
-    // Taken from the python tree-sitter
     integer: $ => token(choice(
-      // seq(
-      //   choice('0x', '0X'),
-      //   repeat1(/_?[A-Fa-f0-9]+/),
-      //   optional(/[Ll]/),
-      // ),
-      // seq(
-      //   choice('0o', '0O'),
-      //   repeat1(/_?[0-7]+/),
-      //   optional(/[Ll]/),
-      // ),
-      // seq(
-      //   choice('0b', '0B'),
-      //   repeat1(/_?[0-1]+/),
-      //   optional(/[Ll]/),
-      // ),
       seq(
         repeat1(/[0-9]+_?/),
-        // choice(
-        //   optional(/[Ll]/), // long numbers
-        //   optional(/[jJ]/), // complex numbers
-        // ),
       ),
     )),
 
-    // Taken from the python tree-sitter
+    // Taken from the python tree-sitter TODO: How much of this does mumps support?
     float: $ => {
       const digits = repeat1(/[0-9]+_?/);
       const exponent = seq(/[eE][\+-]?/, digits);
@@ -401,6 +380,7 @@ module.exports = grammar({
       ));
     },
 
+    // Anything in quotes is OK, I assume
     string: $ => /("[^"]*")+/,
 
     // Per docs: "the values in a string are, at a minimum, any ASCII character code between 32 to 127 (decimal) inclusive"

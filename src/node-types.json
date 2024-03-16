@@ -55,7 +55,7 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": false,
       "types": [
         {
@@ -837,10 +837,6 @@
   },
   {
     "type": "view",
-    "named": false
-  },
-  {
-    "type": "write",
     "named": false
   },
   {
