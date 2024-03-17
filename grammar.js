@@ -75,8 +75,11 @@ module.exports = grammar({
             "x", "xecute",
             "z",
           ),
-          $.arguments,
-          // "0",
+          prec(2,
+            optional(
+              $.arguments,
+            ),
+          ),
         ),
       ),
     ),
