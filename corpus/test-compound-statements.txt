@@ -1,0 +1,18 @@
+==================
+Conditionals
+==================
+  set abc=70
+  if abc=70 set f=1
+---
+(program
+  (assignment
+    (local_variable)
+    (integer))
+  (if_statement
+    (conditional
+      (binary_expression
+        (local_variable)
+        (integer)))
+    (assignment
+      (local_variable)
+      (integer))))
