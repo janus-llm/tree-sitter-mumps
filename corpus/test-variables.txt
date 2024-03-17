@@ -1,0 +1,37 @@
+==================
+Local Variable Assignment
+==================
+  set apples=8
+  set total=apples
+  set a="Then, "
+---
+(program
+  (assignment
+    (local_variable)
+    (integer)
+  )
+  (assignment
+    (local_variable)
+    (local_variable)
+  )
+  (assignment
+    (local_variable)
+    (string)
+  )
+)
+==================
+Global Variable Assignment
+==================
+  set ^apples=8
+  set pears=7
+---
+(program
+  (assignment
+    (global_variable)
+    (integer)
+  )
+  (assignment
+    (local_variable)
+    (integer)
+  )
+)

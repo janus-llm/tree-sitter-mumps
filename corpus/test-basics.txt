@@ -1,41 +1,4 @@
 ==================
-Variable Assignment
-==================
-  set apples=8
-  set total=apples
-  set a="Then, "
----
-(program
-  (assignment
-    (local_variable)
-    (integer)
-  )
-  (assignment
-    (local_variable)
-    (local_variable)
-  )
-  (assignment
-    (local_variable)
-    (string)
-  )
-)
-==================
-Global Variables
-==================
-  set ^apples=8
-  set pears=7
----
-(program
-  (assignment
-    (global_variable)
-    (integer)
-  )
-  (assignment
-    (local_variable)
-    (integer)
-  )
-)
-==================
 Comments
 ==================
   set apples=8
@@ -55,14 +18,16 @@ Comments
   (comment)
 )
 ==================
-Call Write
+Commands
 ==================
   write "There were 8",!
+  quit
 ---
 (program
   (command
   (arguments
-    (string))))
+    (string)))
+  (command))
 ==================
 Arithmetic
 ==================

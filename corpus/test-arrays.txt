@@ -29,3 +29,83 @@
       (array_index
         (integer)))
     (string)))
+==================
+Multidimensional Arrays
+==================
+; multidimensional array
+
+  set september(1,6)=31
+  set september(1,7)=1
+  set september(2,1)=2
+---
+(program
+  (comment)
+  (assignment
+    (local_array
+      (array_index
+        (integer)
+        (integer)))
+    (integer))
+  (assignment
+    (local_array
+      (array_index
+        (integer)
+        (integer)))
+    (integer))
+  (assignment
+    (local_array
+      (array_index
+        (integer)
+        (integer)))
+    (integer)))
+==================
+Associative Arrays
+==================
+; associative array
+
+  write "Associative array:",!
+
+  set cities("UK",1)="London"
+  set cities("UK",2)="Birmingham"
+  set cities("Canada",1)="Toronto"
+  set cities("Canada",2)="Montreal"
+
+  write "Have you ever been to ",cities("UK",1),"?",!
+---
+(program
+  (comment)
+  (command
+    (arguments
+      (string)))
+  (assignment
+    (local_array
+      (array_index
+        (string)
+        (integer)))
+    (string))
+  (assignment
+    (local_array
+      (array_index
+        (string)
+        (integer)))
+    (string))
+  (assignment
+    (local_array
+      (array_index
+        (string)
+        (integer)))
+    (string))
+  (assignment
+    (local_array
+      (array_index
+        (string)
+        (integer)))
+    (string))
+  (command
+    (arguments
+      (string)
+      (local_array
+        (array_index
+          (string)
+          (integer)))
+      (string))))

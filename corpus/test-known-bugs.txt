@@ -1,5 +1,5 @@
 ==================
-BUG: Expressions With Single Letter Commands
+TODO: Expressions With Single Letter Commands
 ==================
 ; here are the last lines of this story
   write a_e_f,!
@@ -23,3 +23,16 @@ BUG: Expressions With Single Letter Commands
             (local_variable)
             (local_variable)
           (local_variable)
+==================
+TODO: Another Write Syntax? 
+==================
+; associative array
+
+  write !,"Associative array:",!
+---
+(program
+  (comment)
+  (call
+    (command)
+      (arguments
+        (string))))
