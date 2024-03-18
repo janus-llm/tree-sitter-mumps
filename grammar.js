@@ -43,44 +43,8 @@ module.exports = grammar({
 
     command: $ => prec.left(
       choice(
-        $._write_read_call,
-        seq(
-          choice(
-            // TODO: Not comprehensive!
-            "b", "break",
-            "c", "close",
-            // "d", "do",
-            // "e", "else",  // special case (if_statement)
-            // "f", "for",  // special case (for_statement)
-            "g", "goto",
-            "h", "halt",
-            "h", "hang",
-            // "i", "if",  // special case (if_statement)
-            "j", "job",
-            "l", "lock",
-            "k", "kill",
-            "m", "merge",
-            "n", "new",
-            "o", "open",
-            "q", "quit",
-            // "r", "read",  // special case (_write_read_call)
-            // "s", "set",  // special case (assignment) 
-            "tc", "tcommit",
-            "tre", "trestart", 
-            "tro", "trollback",
-            "ts", "tstart",
-            "u", "use",
-            "v", "view",
-            // "w", "write", // special case (_write_read_call)
-            "x", "xecute",
-            "z",
-          ),
-          prec(2,
-            optional(
-              $.arguments,
-            ),
-          ),
-        ),
+        $._write_read_command,
+        $._typical_command,
       ),
     ),
 
@@ -96,6 +60,46 @@ module.exports = grammar({
         "=",
         $._expression,
       ),
+    ),
+
+    _typical_command:$ => seq(
+      $.keyword,
+      prec(2,
+        optional(
+          $.arguments,
+        ),
+      ),
+    ),
+
+    keyword: $ => choice(
+      // TODO: Not comprehensive!
+      "b", "break",
+      "c", "close",
+      // "d", "do",
+      // "e", "else",  // special case (if_statement)
+      // "f", "for",  // special case (for_statement)
+      "g", "goto",
+      "h", "halt",
+      "h", "hang",
+      // "i", "if",  // special case (if_statement)
+      "j", "job",
+      "l", "lock",
+      "k", "kill",
+      "m", "merge",
+      "n", "new",
+      "o", "open",
+      "q", "quit",
+      // "r", "read",  // special case (_write_read_command)
+      // "s", "set",  // special case (assignment) 
+      "tc", "tcommit",
+      "tre", "trestart", 
+      "tro", "trollback",
+      "ts", "tstart",
+      "u", "use",
+      "v", "view",
+      // "w", "write", // special case (_write_read_command)
+      "x", "xecute",
+      "z",
     ),
 
     for_statement: $ => prec(2, seq(
@@ -183,19 +187,16 @@ module.exports = grammar({
     ),
 
     _expression: $ => choice(
-      prec(2, // This prec could be dicey, since we really just go right to left! 
-        $.binary_expression,
-      ),
+      $.binary_expression,
       $.unary_expression,
       $._identifier,
       $._literal,
-      $.call,
+      // $.function_call,
     ),
 
     _identifier: $ => choice(
       $._variable,
-      $._array, // TODO!
-      //$.function_name,
+      $._array,
     ),
 
     _array: $ => prec(2,
@@ -312,20 +313,8 @@ module.exports = grammar({
 
     _write_read_outro: $ => ",\!",
 
-    function: $ => seq(
-      "$",
-      $._alphanum,
-    ),
-
-    // For calls to functions with slightly different syntax
-    call: $ => choice(
-      $._typical_call,
-      $._write_read_call,
-      // $.command,
-    ),
-
     // Calls to write end in ,!
-    _write_read_call: $ => prec(2,
+    _write_read_command: $ => prec(2,
       seq(
         /write|w|read|r/,
         $.arguments,
@@ -333,12 +322,25 @@ module.exports = grammar({
       ),
     ),
 
-    _typical_call: $ => seq(
-      $.function,
-      "(",
-      $.arguments,
-      ")",
-    ),
+    // function_call: $ => seq(
+    //   choice(
+    //     $._builtin_function_name,
+    //     $._external_function_name,
+    //     $._user_defined_function_name,
+    //   ),
+    //   "(",
+    //   $.arguments,
+    //   ")",
+    // ),
+
+    // AKA "intrinsic" functions
+    _builtin_function_name: $ => /\$[A-Za-z0-9]+/,
+
+    // Functions defined in other libraries
+    _external_function_name: $ => /\$&[A-Za-z0-9]+/,
+    
+    // Functions defined in this file
+    _user_defined_function_name: $ => $._alphanum,
 
     _set: $ => /set|s/,
 

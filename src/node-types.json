@@ -16,10 +16,6 @@
           "named": true
         },
         {
-          "type": "call",
-          "named": true
-        },
-        {
           "type": "float",
           "named": true
         },
@@ -64,10 +60,6 @@
         },
         {
           "type": "boolean",
-          "named": true
-        },
-        {
-          "type": "call",
           "named": true
         },
         {
@@ -118,10 +110,6 @@
           "named": true
         },
         {
-          "type": "call",
-          "named": true
-        },
-        {
           "type": "float",
           "named": true
         },
@@ -169,10 +157,6 @@
           "named": true
         },
         {
-          "type": "call",
-          "named": true
-        },
-        {
           "type": "float",
           "named": true
         },
@@ -209,7 +193,7 @@
     "fields": {}
   },
   {
-    "type": "call",
+    "type": "command",
     "named": true,
     "fields": {},
     "children": {
@@ -221,22 +205,7 @@
           "named": true
         },
         {
-          "type": "function",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "command",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": false,
-      "types": [
-        {
-          "type": "arguments",
+          "type": "keyword",
           "named": true
         }
       ]
@@ -261,10 +230,6 @@
         },
         {
           "type": "boolean",
-          "named": true
-        },
-        {
-          "type": "call",
           "named": true
         },
         {
@@ -350,11 +315,6 @@
     }
   },
   {
-    "type": "function",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "function_definition",
     "named": true,
     "fields": {},
@@ -411,6 +371,11 @@
         }
       ]
     }
+  },
+  {
+    "type": "keyword",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "label",
@@ -513,10 +478,6 @@
           "named": true
         },
         {
-          "type": "call",
-          "named": true
-        },
-        {
           "type": "float",
           "named": true
         },
@@ -553,10 +514,6 @@
   },
   {
     "type": "#",
-    "named": false
-  },
-  {
-    "type": "$",
     "named": false
   },
   {

@@ -85,189 +85,11 @@
         "members": [
           {
             "type": "SYMBOL",
-            "name": "_write_read_call"
+            "name": "_write_read_command"
           },
           {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "STRING",
-                    "value": "b"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "break"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "c"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "close"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "g"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "goto"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "h"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "halt"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "h"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "hang"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "j"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "job"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "l"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "lock"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "k"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "kill"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "m"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "merge"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "n"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "new"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "o"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "open"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "q"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "quit"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "tc"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "tcommit"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "tre"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "trestart"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "tro"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "trollback"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "ts"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "tstart"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "u"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "use"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "v"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "view"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "x"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "xecute"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "z"
-                  }
-                ]
-              },
-              {
-                "type": "PREC",
-                "value": 2,
-                "content": {
-                  "type": "CHOICE",
-                  "members": [
-                    {
-                      "type": "SYMBOL",
-                      "name": "arguments"
-                    },
-                    {
-                      "type": "BLANK"
-                    }
-                  ]
-                }
-              }
-            ]
+            "type": "SYMBOL",
+            "name": "_typical_command"
           }
         ]
       }
@@ -309,6 +131,192 @@
           }
         ]
       }
+    },
+    "_typical_command": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "keyword"
+        },
+        {
+          "type": "PREC",
+          "value": 2,
+          "content": {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "arguments"
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "keyword": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "b"
+        },
+        {
+          "type": "STRING",
+          "value": "break"
+        },
+        {
+          "type": "STRING",
+          "value": "c"
+        },
+        {
+          "type": "STRING",
+          "value": "close"
+        },
+        {
+          "type": "STRING",
+          "value": "g"
+        },
+        {
+          "type": "STRING",
+          "value": "goto"
+        },
+        {
+          "type": "STRING",
+          "value": "h"
+        },
+        {
+          "type": "STRING",
+          "value": "halt"
+        },
+        {
+          "type": "STRING",
+          "value": "h"
+        },
+        {
+          "type": "STRING",
+          "value": "hang"
+        },
+        {
+          "type": "STRING",
+          "value": "j"
+        },
+        {
+          "type": "STRING",
+          "value": "job"
+        },
+        {
+          "type": "STRING",
+          "value": "l"
+        },
+        {
+          "type": "STRING",
+          "value": "lock"
+        },
+        {
+          "type": "STRING",
+          "value": "k"
+        },
+        {
+          "type": "STRING",
+          "value": "kill"
+        },
+        {
+          "type": "STRING",
+          "value": "m"
+        },
+        {
+          "type": "STRING",
+          "value": "merge"
+        },
+        {
+          "type": "STRING",
+          "value": "n"
+        },
+        {
+          "type": "STRING",
+          "value": "new"
+        },
+        {
+          "type": "STRING",
+          "value": "o"
+        },
+        {
+          "type": "STRING",
+          "value": "open"
+        },
+        {
+          "type": "STRING",
+          "value": "q"
+        },
+        {
+          "type": "STRING",
+          "value": "quit"
+        },
+        {
+          "type": "STRING",
+          "value": "tc"
+        },
+        {
+          "type": "STRING",
+          "value": "tcommit"
+        },
+        {
+          "type": "STRING",
+          "value": "tre"
+        },
+        {
+          "type": "STRING",
+          "value": "trestart"
+        },
+        {
+          "type": "STRING",
+          "value": "tro"
+        },
+        {
+          "type": "STRING",
+          "value": "trollback"
+        },
+        {
+          "type": "STRING",
+          "value": "ts"
+        },
+        {
+          "type": "STRING",
+          "value": "tstart"
+        },
+        {
+          "type": "STRING",
+          "value": "u"
+        },
+        {
+          "type": "STRING",
+          "value": "use"
+        },
+        {
+          "type": "STRING",
+          "value": "v"
+        },
+        {
+          "type": "STRING",
+          "value": "view"
+        },
+        {
+          "type": "STRING",
+          "value": "x"
+        },
+        {
+          "type": "STRING",
+          "value": "xecute"
+        },
+        {
+          "type": "STRING",
+          "value": "z"
+        }
+      ]
     },
     "for_statement": {
       "type": "PREC",
@@ -539,12 +547,8 @@
       "type": "CHOICE",
       "members": [
         {
-          "type": "PREC",
-          "value": 2,
-          "content": {
-            "type": "SYMBOL",
-            "name": "binary_expression"
-          }
+          "type": "SYMBOL",
+          "name": "binary_expression"
         },
         {
           "type": "SYMBOL",
@@ -557,10 +561,6 @@
         {
           "type": "SYMBOL",
           "name": "_literal"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "call"
         }
       ]
     },
@@ -1238,33 +1238,7 @@
       "type": "STRING",
       "value": ",!"
     },
-    "function": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "STRING",
-          "value": "$"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_alphanum"
-        }
-      ]
-    },
-    "call": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "_typical_call"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_write_read_call"
-        }
-      ]
-    },
-    "_write_read_call": {
+    "_write_read_command": {
       "type": "PREC",
       "value": 2,
       "content": {
@@ -1285,26 +1259,17 @@
         ]
       }
     },
-    "_typical_call": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "function"
-        },
-        {
-          "type": "STRING",
-          "value": "("
-        },
-        {
-          "type": "SYMBOL",
-          "name": "arguments"
-        },
-        {
-          "type": "STRING",
-          "value": ")"
-        }
-      ]
+    "_builtin_function_name": {
+      "type": "PATTERN",
+      "value": "\\$[A-Za-z0-9]+"
+    },
+    "_external_function_name": {
+      "type": "PATTERN",
+      "value": "\\$&[A-Za-z0-9]+"
+    },
+    "_user_defined_function_name": {
+      "type": "SYMBOL",
+      "name": "_alphanum"
     },
     "_set": {
       "type": "PATTERN",

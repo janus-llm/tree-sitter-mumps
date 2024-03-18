@@ -27,9 +27,10 @@ Commands
   (command
   (arguments
     (string)))
-  (command))
+  (command
+    (keyword)))
 ==================
-Arithmetic
+Arithmetic Expressions
 ==================
   set apples=7
   set pears=3+8
