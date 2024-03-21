@@ -1,3 +1,8 @@
-node_modules
-build
-*.log
+node_modules/*
+corpus/local_tests/*
+sample_code/*
+log.html
+node_modules/
+.DS_Store
+/Cargo.lock
+/target/
