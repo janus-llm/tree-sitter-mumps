@@ -37,7 +37,7 @@ module.exports = grammar({
     // Multi-part statements
     _compound_statement: $ => choice(
       $.for_statement,
-      $.if_statement,
+      $.conditional_statement,
       $.function_definition,
     ),
 
@@ -78,9 +78,9 @@ module.exports = grammar({
       // // TODO: Not comprehensive!
       /[Bb]|[Bb]reak|[Cc]|[Cc]lose|[Gg]|[Gg]oto|[Hh]|[Hh]alt|[Hh]ang|[Jj]|[Jj]ob|[Ll]|[Ll]ock|[Kk]|[Kk]ill|[Mm]|[Mm]erge|[Nn]|[Nn]ew|[Oo]|[Oo]pen|[Qq]|[Qq]uit|[Tt][Cc]|[Tt]commit|[Tt][Rr][Ee]|[Tt]restart|[Tt][Rr][Oo]|[Tt]rollback|[Tt][Ss]|[Tt]start|[Uu]|[Uu]se|[Vv]|[Vv]iew|[Xx]|[Xx]ecute|[Zz]/
       // NOTE: Some commands are excluded, since they represent other basic functionality:
-      // "e", "else",  // special case (if_statement)
+      // "e", "else",  // special case (conditional_statement)
       // "f", "for",  // special case (for_statement)
-      // "i", "if",  // special case (if_statement)
+      // "i", "if",  // special case (conditional_statement)
       // "r", "read",  // special case (_write_read_command)
       // "s", "set",  // special case (assignment) 
       // "w", "write", // special case (_write_read_command)
@@ -98,9 +98,11 @@ module.exports = grammar({
       ),
     ),
 
-    if_statement: $ => prec.left(3,
+    // Unlike python, I don't think we have 'conditional_expression's - my impression is that this is 
+    // it's own command / line, not something that goes in to arguments, say
+    conditional_statement: $ => prec.left(3,
       seq(
-        /if|i/,
+        /if|i|IF|I/,
         $.conditional,
         $._statement,
       ),
@@ -236,6 +238,7 @@ module.exports = grammar({
 
     unary_expression: $ => prec(2,
       choice(
+        seq('+', $._expression),  // TODO: What is this for? See pg 24.
         seq('-', $._expression),  // Negative
         // seq('!', $._expression), TODO!
         seq('\'', $._expression),  // Not
@@ -308,9 +311,9 @@ module.exports = grammar({
     // Calls to write end in ,!
     _write_read_command: $ => prec(2,
       seq(
-        /write|w|read|r/,
+        /write|w|read|r|WRITE|W|READ|R/,
         $.arguments,
-        $._write_read_outro,
+        // $._write_read_outro,
       ),
     ),
 
@@ -346,6 +349,7 @@ module.exports = grammar({
       $.integer,
       $.float,
       $.boolean,
+      $.format_specifier,
     ),
 
     // TODO: I don't know if this is real
@@ -377,6 +381,8 @@ module.exports = grammar({
 
     // Anything in quotes is OK, I assume
     string: $ => /("[^"]*")+/,
+
+    format_specifier: $ => /[0-9!?#/;]+/,
 
     // Per docs: "the values in a string are, at a minimum, any ASCII character code between 32 to 127 (decimal) inclusive"
     // TODO: Currently excluding:
