@@ -200,8 +200,10 @@ module.exports = grammar({
     ),
 
     _identifier: $ => choice(
+      prec(2, 
+        $._array,
+      ),
       $._variable,
-      $._array,
     ),
 
     _array: $ => prec(2,
