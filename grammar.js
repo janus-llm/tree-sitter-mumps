@@ -99,14 +99,12 @@ module.exports = grammar({
     ),
 
     for_statement: $ => prec(2, seq(
-        "for",
+        /for|f|FOR|F/,
         $._identifier,
         "=",
         $._loop_range,
-        "do",
-        choice(
-          $._statement,
-        ),
+        // "do",
+        $._statement,
       ),
     ),
 
@@ -175,11 +173,18 @@ module.exports = grammar({
     ), 
 
     _loop_range: $ => seq(  // TODO: What is this called?
-      $._variable,
+      // TODO: This could probably be any expression
+      choice(
+        $._variable,
+        $._literal,
+      ),
       repeat(   // Not using repeat1 here, since maybe you can do for i=1 do
         seq(
           ":",
-          $._variable,
+          choice(
+            $._variable,
+            $._literal,
+          ),
         ),
       ),
     ),
