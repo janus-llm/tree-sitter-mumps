@@ -88,7 +88,7 @@ module.exports = grammar({
 
     keyword: $ => choice(
       // // TODO: Not comprehensive!
-      /[Bb]|[Bb]reak|[Cc]|[Cc]lose|[Gg]|[Gg]oto|[Hh]|[Hh]alt|[Hh]ang|[Jj]|[Jj]ob|[Ll]|[Ll]ock|[Kk]|[Kk]ill|[Mm]|[Mm]erge|[Nn]|[Nn]ew|[Oo]|[Oo]pen|[Qq]|[Qq]uit|[Tt][Cc]|[Tt]commit|[Tt][Rr][Ee]|[Tt]restart|[Tt][Rr][Oo]|[Tt]rollback|[Tt][Ss]|[Tt]start|[Uu]|[Uu]se|[Vv]|[Vv]iew|[Xx]|[Xx]ecute|[Zz]/
+      /[Bb]|[Bb]reak|[Cc]|[Cc]lose|[Dd]|[Dd]o|[Gg]|[Gg]oto|[Hh]|[Hh]alt|[Hh]ang|[Jj]|[Jj]ob|[Ll]|[Ll]ock|[Kk]|[Kk]ill|[Mm]|[Mm]erge|[Nn]|[Nn]ew|[Oo]|[Oo]pen|[Qq]|[Qq]uit|[Tt][Cc]|[Tt]commit|[Tt][Rr][Ee]|[Tt]restart|[Tt][Rr][Oo]|[Tt]rollback|[Tt][Ss]|[Tt]start|[Uu]|[Uu]se|[Vv]|[Vv]iew|[Xx]|[Xx]ecute|[Zz]/
       // NOTE: Some commands are excluded, since they represent other basic functionality:
       // "e", "else",  // special case (conditional_statement)
       // "f", "for",  // special case (for_statement)
