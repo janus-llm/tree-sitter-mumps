@@ -56,7 +56,10 @@ module.exports = grammar({
     assignment: $ => prec(2, 
       seq(
         $._set,
-        $._variable,
+        choice(
+          $._variable,
+          $.lvalue_function_call,
+        ),
         choice(
           "=",
           "=+",
@@ -79,11 +82,14 @@ module.exports = grammar({
 
     _typical_command:$ => seq(
       $.keyword,
-      prec(2,
-        optional(
-          $.arguments,
-        ),
+      optional(
+        $.postconditional,
       ),
+      // prec(2,
+      optional(
+        $.arguments,
+      ),
+      // ),
     ),
 
     keyword: $ => choice(
@@ -340,6 +346,11 @@ module.exports = grammar({
         $._external_function_name,
         // $._user_defined_function_name,
       ),
+      $.parameters,
+    ),
+
+    lvalue_function_call: $ => seq(
+      /\$PIECE|\$P|\$EXTRACT|\$E/,
       $.parameters,
     ),
 
