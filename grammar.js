@@ -62,6 +62,18 @@ module.exports = grammar({
           "=+",
         ),
         $._expression,
+        // Optional multiple assignment, separated by commas
+        repeat(
+          seq(
+            ",",
+            $._variable,
+            choice(
+              "=",
+              "=+",
+            ),
+            $._expression,
+          ),
+        ),
       ),
     ),
 
