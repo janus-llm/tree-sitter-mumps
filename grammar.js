@@ -161,7 +161,7 @@ module.exports = grammar({
       ")",
     ),
         
-    parameter: $ => $._alphanum,  // TODO!
+    parameter: $ => $._expression,
 
     _eol_comment: $ => token(seq(';', /.*/)),
 
@@ -178,7 +178,7 @@ module.exports = grammar({
 
     _loop_range: $ => seq(  // TODO: What is this called?
       $._variable,
-      repeat(   // Not using repeat 1 here, since maybe you can do for i=1 do
+      repeat(   // Not using repeat1 here, since maybe you can do for i=1 do
         seq(
           ":",
           $._variable,
@@ -187,11 +187,13 @@ module.exports = grammar({
     ),
 
     _expression: $ => choice(
-      $.binary_expression,
-      $.unary_expression,
+      prec(5, 
+        $._literal,
+      ),
       $._identifier,
-      $._literal,
-      // $.function_call,
+      $.unary_expression,
+      $.binary_expression,
+      $.function_call,
     ),
 
     _identifier: $ => choice(
@@ -322,16 +324,14 @@ module.exports = grammar({
       ),
     ),
 
-    // function_call: $ => seq(
-    //   choice(
-    //     $._builtin_function_name,
-    //     $._external_function_name,
-    //     $._user_defined_function_name,
-    //   ),
-    //   "(",
-    //   $.arguments,
-    //   ")",
-    // ),
+    function_call: $ => seq(
+      choice(
+        $._builtin_function_name,
+        $._external_function_name,
+        // $._user_defined_function_name,
+      ),
+      $.parameters,
+    ),
 
     // AKA "intrinsic" functions
     _builtin_function_name: $ => /\$[A-Za-z0-9]+/,
@@ -340,12 +340,12 @@ module.exports = grammar({
     _external_function_name: $ => /\$&[A-Za-z0-9]+/,
     
     // Functions defined in this file
-    _user_defined_function_name: $ => $._alphanum,
+    // _user_defined_function_name: $ => $._alphanum,
 
     _set: $ => /set|s/,
 
     _numeric: $ => /[0-9]+/,
-    _alphanum: $ => /[A-Za-z0-9]+/,
+    // _alphanum: $ => /[A-Za-z0-9]+/,
 
     /*
     Mumps variables are not typed. The basic data type is string although integer, floating point and
