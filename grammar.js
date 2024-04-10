@@ -57,7 +57,10 @@ module.exports = grammar({
       seq(
         $._set,
         $._variable,
-        "=",
+        choice(
+          "=",
+          "=+",
+        ),
         $._expression,
       ),
     ),
@@ -204,13 +207,18 @@ module.exports = grammar({
     _array: $ => prec(2,
       choice(
         $.local_array,
-        // $.global_array,
+        $.global_array,
       ),
     ),
 
     // Boy this feels pretty hacky
     local_array: $ => seq(
       $._variable_name,
+      $.array_index,
+    ),
+
+    global_array: $ => seq(
+      $.global_variable,
       $.array_index,
     ),
 
@@ -229,8 +237,7 @@ module.exports = grammar({
     _variable: $ => choice(
       $.local_variable,
       $.global_variable,
-      $.local_array,
-      // $.global_array,
+      $._array,
     ),
 
     // A Mumps variable name must begin with a letter or percent sign (%) and may be followed by letters, percent signs, or numbers.
@@ -306,7 +313,7 @@ module.exports = grammar({
 
     //   // @ts-ignore
     //   return choice(...table.map(([fn, operator, precedence]) => fn(precedence, seq(
-    //     field('left', $.primary_expression),
+    //     field('left', $.primary_expression), // TODO!
     //     // @ts-ignore
     //     field('operator', operator),
     //     field('right', $.primary_expression),
@@ -342,7 +349,7 @@ module.exports = grammar({
     // Functions defined in this file
     // _user_defined_function_name: $ => $._alphanum,
 
-    _set: $ => /set|s/,
+    _set: $ => /set|s|S/,
 
     _numeric: $ => /[0-9]+/,
     // _alphanum: $ => /[A-Za-z0-9]+/,
