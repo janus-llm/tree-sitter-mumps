@@ -75,34 +75,15 @@ module.exports = grammar({
     ),
 
     keyword: $ => choice(
-      // TODO: Not comprehensive!
-      "b", "break",
-      "c", "close",
-      // "d", "do",
+      // // TODO: Not comprehensive!
+      /[Bb]|[Bb]reak|[Cc]|[Cc]lose|[Gg]|[Gg]oto|[Hh]|[Hh]alt|[Hh]ang|[Jj]|[Jj]ob|[Ll]|[Ll]ock|[Kk]|[Kk]ill|[Mm]|[Mm]erge|[Nn]|[Nn]ew|[Oo]|[Oo]pen|[Qq]|[Qq]uit|[Tt][Cc]|[Tt]commit|[Tt][Rr][Ee]|[Tt]restart|[Tt][Rr][Oo]|[Tt]rollback|[Tt][Ss]|[Tt]start|[Uu]|[Uu]se|[Vv]|[Vv]iew|[Xx]|[Xx]ecute|[Zz]/
+      // NOTE: Some commands are excluded, since they represent other basic functionality:
       // "e", "else",  // special case (if_statement)
       // "f", "for",  // special case (for_statement)
-      "g", "goto",
-      "h", "halt",
-      "h", "hang",
       // "i", "if",  // special case (if_statement)
-      "j", "job",
-      "l", "lock",
-      "k", "kill",
-      "m", "merge",
-      "n", "new",
-      "o", "open",
-      "q", "quit",
       // "r", "read",  // special case (_write_read_command)
       // "s", "set",  // special case (assignment) 
-      "tc", "tcommit",
-      "tre", "trestart", 
-      "tro", "trollback",
-      "ts", "tstart",
-      "u", "use",
-      "v", "view",
       // "w", "write", // special case (_write_read_command)
-      "x", "xecute",
-      "z",
     ),
 
     for_statement: $ => prec(2, seq(
