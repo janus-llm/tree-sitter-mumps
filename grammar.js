@@ -22,15 +22,10 @@ module.exports = grammar({
 
     // Individual statements
     _simple_statement: $ => seq(
-      // TODO: A simple statement can have a conditional!
-      // optional(
-      //   $.conditional
-      // ),
       choice(
         $.command,
         $.comment,
         $.assignment,
-        // $.call,  // TODO: my understanding is that function calls are only used in expressions, never as an entire statement
       ),
     ),
 
@@ -85,11 +80,9 @@ module.exports = grammar({
       optional(
         $.postconditional,
       ),
-      // prec(2,
       optional(
         $.arguments,
       ),
-      // ),
     ),
 
     keyword: $ => choice(
@@ -109,7 +102,6 @@ module.exports = grammar({
         $._identifier,
         "=",
         $._loop_range,
-        // "do",
         $._statement,
       ),
     ),
@@ -121,14 +113,6 @@ module.exports = grammar({
         /if|i|IF|I/,
         $.conditional,
         $._statement,
-      ),
-    ),
-
-    function_definition: $ => prec(2,
-      seq(
-        $._label,
-        $.parameters,
-        // $.body
       ),
     ),
 
@@ -329,14 +313,11 @@ module.exports = grammar({
     //   ))));
     // },
 
-    _write_read_outro: $ => ",\!",
-
     // Calls to write end in ,!
     _write_read_command: $ => prec(2,
       seq(
         /write|w|read|r|WRITE|W|READ|R/,
         $.arguments,
-        // $._write_read_outro,
       ),
     ),
 
