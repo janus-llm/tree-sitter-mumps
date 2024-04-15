@@ -194,13 +194,11 @@ module.exports = grammar({
     ),
 
     _expression: $ => choice(
-      prec(5, 
-        $._literal,
-      ),
-      $._identifier,
+      $._literal,
+      $.function_call,
       $.unary_expression,
       $.binary_expression,
-      $.function_call,
+      $._identifier,
     ),
 
     _identifier: $ => choice(
@@ -218,6 +216,7 @@ module.exports = grammar({
     ),
 
     // Boy this feels pretty hacky
+    // ),
     local_array: $ => seq(
       $._variable_name,
       $.array_index,
@@ -244,6 +243,7 @@ module.exports = grammar({
       $.local_variable,
       $.global_variable,
       $._array,
+      $.special_variable,
     ),
 
     // A Mumps variable name must begin with a letter or percent sign (%) and may be followed by letters, percent signs, or numbers.
@@ -349,8 +349,18 @@ module.exports = grammar({
       $.parameters,
     ),
 
+    special_variable: $ => token(
+      // TODO: Is this list exhaustive?
+      // NOTE: Special variables are always uppercase
+      /\$([DEHIJKPQRSTXYZ]|DEVICE|ECODE|ESTACK|ETRAP|HOROLOG|IO|JOB|KEY|PRINCIPAL|QUIT|REFERENCE|SYSTEM|STACK|TEST|TLEVEL|TRESTART|XECUTE|YCORD|ZBREAK|ZCLOSE|ZDATE|ZERROR|ZJOB|ZSYSTEM|ZTRAP|ZVERSION)/,
+    ),
+    
     // AKA "intrinsic" functions
-    _builtin_function_name: $ => /\$[A-Za-z0-9]+/,
+    _builtin_function_name: $ => token(
+      prec(2, 
+        /\$[A-Za-z0-9]+/,
+      ),
+    ),
 
     // Functions defined in other libraries
     _external_function_name: $ => /\$&[A-Za-z0-9]+/,
@@ -421,5 +431,6 @@ module.exports = grammar({
     // _literal: $ => /(("[^"]*")|([^\x00-\x20\x2c\x22\x2b\x2a\x2d\x3d\x28\x29]+))+/,
 
     newline: $ => /[\s]*\n/,
+
   }
 });
