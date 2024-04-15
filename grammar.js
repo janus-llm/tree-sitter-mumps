@@ -33,7 +33,7 @@ module.exports = grammar({
     _compound_statement: $ => choice(
       $.for_statement,
       $.conditional_statement,
-      $.function_definition,
+      // $.function_definition,
     ),
 
     command: $ => prec.left(
@@ -51,6 +51,9 @@ module.exports = grammar({
     assignment: $ => prec(2, 
       seq(
         $._set,
+        optional(
+          $.postconditional,
+        ),
         choice(
           $._variable,
           $.lvalue_function_call,
@@ -97,12 +100,23 @@ module.exports = grammar({
       // "w", "write", // special case (_write_read_command)
     ),
 
-    for_statement: $ => prec(2, seq(
-        /for|f|FOR|F/,
-        $._identifier,
-        "=",
-        $._loop_range,
-        $._statement,
+    for_statement: $ => prec(2, 
+      seq(
+        choice(
+          // Loop with range
+          seq(
+            /for|f|FOR|F/,
+            $._identifier,
+            "=",
+            $._loop_range,
+            $._statement,
+          ),
+          // Infinite loop
+          seq(
+            /for|f|FOR|F/,
+            $._statement,
+          ),
+        ),
       ),
     ),
 
