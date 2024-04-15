@@ -350,8 +350,12 @@
         "type": "SEQ",
         "members": [
           {
-            "type": "SYMBOL",
-            "name": "_expression"
+            "type": "FIELD",
+            "name": "argument",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_expression"
+            }
           },
           {
             "type": "REPEAT",
@@ -363,8 +367,12 @@
                   "value": ","
                 },
                 {
-                  "type": "SYMBOL",
-                  "name": "_expression"
+                  "type": "FIELD",
+                  "name": "argument",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "_expression"
+                  }
                 }
               ]
             }
@@ -380,7 +388,7 @@
         "name": "_label"
       }
     },
-    "parameters": {
+    "_function_arguments": {
       "type": "SEQ",
       "members": [
         {
@@ -388,32 +396,8 @@
           "value": "("
         },
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "parameter"
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
-        },
-        {
-          "type": "REPEAT",
-          "content": {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "STRING",
-                "value": ","
-              },
-              {
-                "type": "SYMBOL",
-                "name": "parameter"
-              }
-            ]
-          }
+          "type": "SYMBOL",
+          "name": "arguments"
         },
         {
           "type": "STRING",
@@ -1277,7 +1261,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "parameters"
+          "name": "_function_arguments"
         }
       ]
     },
@@ -1290,7 +1274,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "parameters"
+          "name": "_function_arguments"
         }
       ]
     },

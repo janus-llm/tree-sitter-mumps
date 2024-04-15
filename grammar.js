@@ -33,7 +33,6 @@ module.exports = grammar({
     _compound_statement: $ => choice(
       $.for_statement,
       $.if_statement,
-      // $.function_definition,
     ),
 
     command: $ => prec.left(
@@ -145,11 +144,11 @@ module.exports = grammar({
 
     arguments: $ => prec.left(
       seq(
-        $._expression,
+        field('argument', $._expression),
         repeat(
           seq(
             ",",
-            $._expression,
+            field('argument', $._expression),
           ),
         ),
       ),
@@ -159,18 +158,9 @@ module.exports = grammar({
       $._label, // This just allows for cases like function declarations where we want to parse a label and not name it
     ),
 
-    parameters: $ => seq(
-      // In the no params case functions still look like: <function_name()>
+    _function_arguments: $ => seq(
       "(",
-      optional(
-        $.parameter,
-      ),
-      repeat(
-        seq(
-          ",",
-          $.parameter,
-        ),
-      ),
+      $.arguments,
       ")",
     ),
         
@@ -348,12 +338,12 @@ module.exports = grammar({
         $._external_function_name,
         // $._user_defined_function_name,
       ),
-      $.parameters,
+      $._function_arguments,
     ),
 
     lvalue_function_call: $ => seq(
       /\$PIECE|\$P|\$EXTRACT|\$E/,
-      $.parameters,
+      $._function_arguments,
     ),
 
     special_variable: $ => token(
