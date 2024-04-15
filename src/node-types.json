@@ -20,7 +20,15 @@
           "named": true
         },
         {
+          "type": "format_specifier",
+          "named": true
+        },
+        {
           "type": "function_call",
+          "named": true
+        },
+        {
+          "type": "global_array",
           "named": true
         },
         {
@@ -40,6 +48,10 @@
           "named": true
         },
         {
+          "type": "special_variable",
+          "named": true
+        },
+        {
           "type": "string",
           "named": true
         },
@@ -53,7 +65,160 @@
   {
     "type": "array_index",
     "named": true,
-    "fields": {},
+    "fields": {
+      "subscript": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
+            "type": "boolean",
+            "named": true
+          },
+          {
+            "type": "float",
+            "named": true
+          },
+          {
+            "type": "format_specifier",
+            "named": true
+          },
+          {
+            "type": "function_call",
+            "named": true
+          },
+          {
+            "type": "global_array",
+            "named": true
+          },
+          {
+            "type": "global_variable",
+            "named": true
+          },
+          {
+            "type": "integer",
+            "named": true
+          },
+          {
+            "type": "local_array",
+            "named": true
+          },
+          {
+            "type": "local_variable",
+            "named": true
+          },
+          {
+            "type": "special_variable",
+            "named": true
+          },
+          {
+            "type": "string",
+            "named": true
+          },
+          {
+            "type": "unary_expression",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "assignment",
+    "named": true,
+    "fields": {
+      "left": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "global_array",
+            "named": true
+          },
+          {
+            "type": "global_variable",
+            "named": true
+          },
+          {
+            "type": "local_array",
+            "named": true
+          },
+          {
+            "type": "local_variable",
+            "named": true
+          },
+          {
+            "type": "lvalue_function_call",
+            "named": true
+          },
+          {
+            "type": "special_variable",
+            "named": true
+          }
+        ]
+      },
+      "right": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
+            "type": "boolean",
+            "named": true
+          },
+          {
+            "type": "float",
+            "named": true
+          },
+          {
+            "type": "format_specifier",
+            "named": true
+          },
+          {
+            "type": "function_call",
+            "named": true
+          },
+          {
+            "type": "global_array",
+            "named": true
+          },
+          {
+            "type": "global_variable",
+            "named": true
+          },
+          {
+            "type": "integer",
+            "named": true
+          },
+          {
+            "type": "local_array",
+            "named": true
+          },
+          {
+            "type": "local_variable",
+            "named": true
+          },
+          {
+            "type": "special_variable",
+            "named": true
+          },
+          {
+            "type": "string",
+            "named": true
+          },
+          {
+            "type": "unary_expression",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": true,
       "required": false,
@@ -71,7 +236,15 @@
           "named": true
         },
         {
+          "type": "format_specifier",
+          "named": true
+        },
+        {
           "type": "function_call",
+          "named": true
+        },
+        {
+          "type": "global_array",
           "named": true
         },
         {
@@ -91,54 +264,11 @@
           "named": true
         },
         {
-          "type": "string",
+          "type": "postconditional",
           "named": true
         },
         {
-          "type": "unary_expression",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "assignment",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "binary_expression",
-          "named": true
-        },
-        {
-          "type": "boolean",
-          "named": true
-        },
-        {
-          "type": "float",
-          "named": true
-        },
-        {
-          "type": "function_call",
-          "named": true
-        },
-        {
-          "type": "global_variable",
-          "named": true
-        },
-        {
-          "type": "integer",
-          "named": true
-        },
-        {
-          "type": "local_array",
-          "named": true
-        },
-        {
-          "type": "local_variable",
+          "type": "special_variable",
           "named": true
         },
         {
@@ -173,7 +303,15 @@
           "named": true
         },
         {
+          "type": "format_specifier",
+          "named": true
+        },
+        {
           "type": "function_call",
+          "named": true
+        },
+        {
+          "type": "global_array",
           "named": true
         },
         {
@@ -190,6 +328,10 @@
         },
         {
           "type": "local_variable",
+          "named": true
+        },
+        {
+          "type": "special_variable",
           "named": true
         },
         {
@@ -223,6 +365,10 @@
         {
           "type": "keyword",
           "named": true
+        },
+        {
+          "type": "postconditional",
+          "named": true
         }
       ]
     }
@@ -231,57 +377,6 @@
     "type": "comment",
     "named": true,
     "fields": {}
-  },
-  {
-    "type": "conditional",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": false,
-      "types": [
-        {
-          "type": "binary_expression",
-          "named": true
-        },
-        {
-          "type": "boolean",
-          "named": true
-        },
-        {
-          "type": "float",
-          "named": true
-        },
-        {
-          "type": "function_call",
-          "named": true
-        },
-        {
-          "type": "global_variable",
-          "named": true
-        },
-        {
-          "type": "integer",
-          "named": true
-        },
-        {
-          "type": "local_array",
-          "named": true
-        },
-        {
-          "type": "local_variable",
-          "named": true
-        },
-        {
-          "type": "string",
-          "named": true
-        },
-        {
-          "type": "unary_expression",
-          "named": true
-        }
-      ]
-    }
   },
   {
     "type": "for_statement",
@@ -296,6 +391,10 @@
           "named": true
         },
         {
+          "type": "boolean",
+          "named": true
+        },
+        {
           "type": "command",
           "named": true
         },
@@ -304,11 +403,19 @@
           "named": true
         },
         {
+          "type": "float",
+          "named": true
+        },
+        {
           "type": "for_statement",
           "named": true
         },
         {
-          "type": "function_definition",
+          "type": "format_specifier",
+          "named": true
+        },
+        {
+          "type": "global_array",
           "named": true
         },
         {
@@ -317,6 +424,10 @@
         },
         {
           "type": "if_statement",
+          "named": true
+        },
+        {
+          "type": "integer",
           "named": true
         },
         {
@@ -329,6 +440,14 @@
         },
         {
           "type": "local_variable",
+          "named": true
+        },
+        {
+          "type": "special_variable",
+          "named": true
+        },
+        {
+          "type": "string",
           "named": true
         }
       ]
@@ -350,15 +469,19 @@
     }
   },
   {
-    "type": "function_definition",
+    "type": "global_array",
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
         {
-          "type": "parameters",
+          "type": "array_index",
+          "named": true
+        },
+        {
+          "type": "global_variable",
           "named": true
         }
       ]
@@ -367,44 +490,95 @@
   {
     "type": "if_statement",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "assignment",
-          "named": true
-        },
-        {
-          "type": "command",
-          "named": true
-        },
-        {
-          "type": "comment",
-          "named": true
-        },
-        {
-          "type": "conditional",
-          "named": true
-        },
-        {
-          "type": "for_statement",
-          "named": true
-        },
-        {
-          "type": "function_definition",
-          "named": true
-        },
-        {
-          "type": "if_statement",
-          "named": true
-        },
-        {
-          "type": "label",
-          "named": true
-        }
-      ]
+    "fields": {
+      "condition": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
+            "type": "boolean",
+            "named": true
+          },
+          {
+            "type": "float",
+            "named": true
+          },
+          {
+            "type": "format_specifier",
+            "named": true
+          },
+          {
+            "type": "function_call",
+            "named": true
+          },
+          {
+            "type": "global_array",
+            "named": true
+          },
+          {
+            "type": "global_variable",
+            "named": true
+          },
+          {
+            "type": "integer",
+            "named": true
+          },
+          {
+            "type": "local_array",
+            "named": true
+          },
+          {
+            "type": "local_variable",
+            "named": true
+          },
+          {
+            "type": "special_variable",
+            "named": true
+          },
+          {
+            "type": "string",
+            "named": true
+          },
+          {
+            "type": "unary_expression",
+            "named": true
+          }
+        ]
+      },
+      "consequence": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "assignment",
+            "named": true
+          },
+          {
+            "type": "command",
+            "named": true
+          },
+          {
+            "type": "comment",
+            "named": true
+          },
+          {
+            "type": "for_statement",
+            "named": true
+          },
+          {
+            "type": "if_statement",
+            "named": true
+          },
+          {
+            "type": "label",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -438,6 +612,21 @@
     "fields": {}
   },
   {
+    "type": "lvalue_function_call",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "parameters",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "parameter",
     "named": true,
     "fields": {},
@@ -458,7 +647,15 @@
           "named": true
         },
         {
+          "type": "format_specifier",
+          "named": true
+        },
+        {
           "type": "function_call",
+          "named": true
+        },
+        {
+          "type": "global_array",
           "named": true
         },
         {
@@ -475,6 +672,10 @@
         },
         {
           "type": "local_variable",
+          "named": true
+        },
+        {
+          "type": "special_variable",
           "named": true
         },
         {
@@ -504,6 +705,70 @@
     }
   },
   {
+    "type": "postconditional",
+    "named": true,
+    "fields": {
+      "condition": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
+            "type": "boolean",
+            "named": true
+          },
+          {
+            "type": "float",
+            "named": true
+          },
+          {
+            "type": "format_specifier",
+            "named": true
+          },
+          {
+            "type": "function_call",
+            "named": true
+          },
+          {
+            "type": "global_array",
+            "named": true
+          },
+          {
+            "type": "global_variable",
+            "named": true
+          },
+          {
+            "type": "integer",
+            "named": true
+          },
+          {
+            "type": "local_array",
+            "named": true
+          },
+          {
+            "type": "local_variable",
+            "named": true
+          },
+          {
+            "type": "special_variable",
+            "named": true
+          },
+          {
+            "type": "string",
+            "named": true
+          },
+          {
+            "type": "unary_expression",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "program",
     "named": true,
     "fields": {},
@@ -525,10 +790,6 @@
         },
         {
           "type": "for_statement",
-          "named": true
-        },
-        {
-          "type": "function_definition",
           "named": true
         },
         {
@@ -563,7 +824,15 @@
           "named": true
         },
         {
+          "type": "format_specifier",
+          "named": true
+        },
+        {
           "type": "function_call",
+          "named": true
+        },
+        {
+          "type": "global_array",
           "named": true
         },
         {
@@ -580,6 +849,10 @@
         },
         {
           "type": "local_variable",
+          "named": true
+        },
+        {
+          "type": "special_variable",
           "named": true
         },
         {
@@ -682,6 +955,10 @@
     "named": false
   },
   {
+    "type": "=+",
+    "named": false
+  },
+  {
     "type": ">",
     "named": false
   },
@@ -710,26 +987,6 @@
     "named": false
   },
   {
-    "type": "b",
-    "named": false
-  },
-  {
-    "type": "break",
-    "named": false
-  },
-  {
-    "type": "c",
-    "named": false
-  },
-  {
-    "type": "close",
-    "named": false
-  },
-  {
-    "type": "do",
-    "named": false
-  },
-  {
     "type": "false",
     "named": false
   },
@@ -738,159 +995,27 @@
     "named": true
   },
   {
-    "type": "for",
-    "named": false
-  },
-  {
-    "type": "g",
-    "named": false
+    "type": "format_specifier",
+    "named": true
   },
   {
     "type": "global_variable",
     "named": true
   },
   {
-    "type": "goto",
-    "named": false
-  },
-  {
-    "type": "h",
-    "named": false
-  },
-  {
-    "type": "halt",
-    "named": false
-  },
-  {
-    "type": "hang",
-    "named": false
-  },
-  {
     "type": "integer",
     "named": true
   },
   {
-    "type": "j",
-    "named": false
-  },
-  {
-    "type": "job",
-    "named": false
-  },
-  {
-    "type": "k",
-    "named": false
-  },
-  {
-    "type": "kill",
-    "named": false
-  },
-  {
-    "type": "l",
-    "named": false
-  },
-  {
-    "type": "lock",
-    "named": false
-  },
-  {
-    "type": "m",
-    "named": false
-  },
-  {
-    "type": "merge",
-    "named": false
-  },
-  {
-    "type": "n",
-    "named": false
-  },
-  {
-    "type": "new",
-    "named": false
-  },
-  {
-    "type": "o",
-    "named": false
-  },
-  {
-    "type": "open",
-    "named": false
-  },
-  {
-    "type": "q",
-    "named": false
-  },
-  {
-    "type": "quit",
-    "named": false
+    "type": "special_variable",
+    "named": true
   },
   {
     "type": "string",
     "named": true
   },
   {
-    "type": "tc",
-    "named": false
-  },
-  {
-    "type": "tcommit",
-    "named": false
-  },
-  {
-    "type": "tre",
-    "named": false
-  },
-  {
-    "type": "trestart",
-    "named": false
-  },
-  {
-    "type": "tro",
-    "named": false
-  },
-  {
-    "type": "trollback",
-    "named": false
-  },
-  {
     "type": "true",
-    "named": false
-  },
-  {
-    "type": "ts",
-    "named": false
-  },
-  {
-    "type": "tstart",
-    "named": false
-  },
-  {
-    "type": "u",
-    "named": false
-  },
-  {
-    "type": "use",
-    "named": false
-  },
-  {
-    "type": "v",
-    "named": false
-  },
-  {
-    "type": "view",
-    "named": false
-  },
-  {
-    "type": "x",
-    "named": false
-  },
-  {
-    "type": "xecute",
-    "named": false
-  },
-  {
-    "type": "z",
     "named": false
   }
 ]
