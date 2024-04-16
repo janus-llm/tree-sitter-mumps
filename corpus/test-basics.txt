@@ -26,7 +26,8 @@ Commands
 (program
   (command
   (arguments
-    (string)))
+    (string)
+    (format_specifier)))
   (command
     (keyword)))
 ==================

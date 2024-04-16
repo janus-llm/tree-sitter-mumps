@@ -1,0 +1,26 @@
+==================
+Function Call
+==================
+  S var=$func(arg1, arg2)
+---
+(program
+    (assignment
+      (local_variable)
+      (function_call
+        (arguments
+          (local_variable)
+          (local_variable)))))
+==================
+Function Call vs. Special Variable
+==================
+  S var=$D
+  S var=$D(arg1, arg2)
+---
+(program
+    (assignment
+      (local_variable)
+      (function_call
+        (arguments
+          (local_variable)
+          (local_variable)))))
+

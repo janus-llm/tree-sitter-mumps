@@ -13,7 +13,8 @@
   (comment)
   (command
     (arguments
-      (string)))
+      (string)
+      (format_specifier)))
   (assignment
     (local_array
       (array_index
@@ -76,7 +77,8 @@ Associative Arrays
   (comment)
   (command
     (arguments
-      (string)))
+      (string)
+      (format_specifier)))
   (assignment
     (local_array
       (array_index
@@ -108,4 +110,5 @@ Associative Arrays
         (array_index
           (string)
           (integer)))
-      (string))))
+      (string)
+      (format_specifier))))

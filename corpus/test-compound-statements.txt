@@ -1,5 +1,5 @@
 ==================
-Conditionals
+If Statement
 ==================
   set abc=70
   if abc=70 set f=1
@@ -9,10 +9,23 @@ Conditionals
     (local_variable)
     (integer))
   (if_statement
-    (conditional
-      (binary_expression
-        (local_variable)
-        (integer)))
+    (binary_expression
+      (local_variable)
+      (integer))
     (assignment
       (local_variable)
       (integer))))
+==================
+Single Line For Statement
+==================
+  F X=0:1:2 S ^ARRAY(X)=$FUNC(1, 2)
+---
+(program
+)
+==================
+Single Line For Statement - Infinite Loop
+==================
+  F S VAR1=$FUNC(1, 2) Q:'VAR2
+---
+(program
+  (for_statement)

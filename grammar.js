@@ -114,19 +114,55 @@ module.exports = grammar({
 
     for_statement: $ => prec(2, 
       seq(
-        choice(
-          // Loop with range
-          seq(
-            /for|f|FOR|F/,
-            $._identifier,
-            "=",
-            $._loop_range,
-            $._statement,
+        // Loop with range
+        seq(
+          /for|f|FOR|F/,
+          // Not required, infinite loop without
+          optional(
+            field('control_variable', $._identifier),
           ),
-          // Infinite loop
-          seq(
-            /for|f|FOR|F/,
-            $._statement,
+          // Not required - without an initializer, the for loop won't modify the variable before it starts: `S I = 5 F I::2:20 <body>`
+          optional(
+            field('initializer', $._loop_initializer),
+          ),
+          // Not required - without a step value, the variable is incremented by 1 each loop: `F I=1::10 <body>`
+          optional(
+            seq(
+              ":",
+              field('step value', $._expression),
+            ),
+          ),
+          // Not required - without a stop value, the loop continues indefintely, until a quit is reached: `F I <body> <quit>`
+          optional(
+            seq(
+              ":",
+              field('stop value', $._expression),
+            ),
+          ),
+         $._statement,
+        ),
+      ),
+    ),
+
+    _loop_initializer: $ => choice(
+      seq(
+        "=",
+        $._expression,
+      ),
+    ),
+
+    _loop_range: $ => seq(  // TODO: What is this called?
+      // TODO: This could probably be any expression
+      choice(
+        $._variable,
+        $._literal,
+      ),
+      repeat(   // Not using repeat1 here, since maybe you can do for i=1 do
+        seq(
+          ":",
+          choice(
+            $._variable,
+            $._literal,
           ),
         ),
       ),
@@ -171,23 +207,6 @@ module.exports = grammar({
     postconditional: $ => seq(
       ":",
       field('condition', $._expression),
-    ),
-
-    _loop_range: $ => seq(  // TODO: What is this called?
-      // TODO: This could probably be any expression
-      choice(
-        $._variable,
-        $._literal,
-      ),
-      repeat(   // Not using repeat1 here, since maybe you can do for i=1 do
-        seq(
-          ":",
-          choice(
-            $._variable,
-            $._literal,
-          ),
-        ),
-      ),
     ),
 
     _expression: $ => choice(
