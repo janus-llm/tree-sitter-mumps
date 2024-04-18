@@ -1325,11 +1325,15 @@
           "members": [
             {
               "type": "SYMBOL",
-              "name": "_builtin_function_name"
+              "name": "_builtin_identifier"
             },
             {
               "type": "SYMBOL",
-              "name": "_external_function_name"
+              "name": "_external_identifier"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "_user_defined_identifier"
             }
           ]
         },
@@ -1353,26 +1357,27 @@
       ]
     },
     "special_variable": {
-      "type": "TOKEN",
-      "content": {
-        "type": "PATTERN",
-        "value": "\\$([DEHIJKPQRSTXYZ]|DEVICE|ECODE|ESTACK|ETRAP|HOROLOG|IO|JOB|KEY|PRINCIPAL|QUIT|REFERENCE|SYSTEM|STACK|TEST|TLEVEL|TRESTART|XECUTE|YCORD|ZBREAK|ZCLOSE|ZDATE|ZERROR|ZJOB|ZSYSTEM|ZTRAP|ZVERSION)"
-      }
+      "type": "SYMBOL",
+      "name": "_builtin_identifier"
     },
-    "_builtin_function_name": {
+    "_builtin_identifier": {
+      "type": "PATTERN",
+      "value": "\\$[A-Za-z0-9]+"
+    },
+    "_external_identifier": {
+      "type": "PATTERN",
+      "value": "\\$&[A-Za-z0-9]+"
+    },
+    "_user_defined_identifier": {
       "type": "TOKEN",
       "content": {
         "type": "PREC",
-        "value": 2,
+        "value": -1,
         "content": {
           "type": "PATTERN",
-          "value": "\\$[A-Za-z0-9]+"
+          "value": "[A-Za-z0-9]+"
         }
       }
-    },
-    "_external_function_name": {
-      "type": "PATTERN",
-      "value": "\\$&[A-Za-z0-9]+"
     },
     "_set": {
       "type": "PATTERN",

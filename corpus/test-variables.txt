@@ -35,3 +35,24 @@ Global Variable Assignment
     (integer)
   )
 )
+==================
+Special Variables
+==================
+  set apples=$D
+  set apples=$DEVICE
+  set apples=$D(3)
+---
+(program
+  (assignment
+    (local_variable)
+    (special_variable)
+  )
+  (assignment
+    (local_variable)
+    (special_variable)
+  )
+  (assignment
+    (local_variable)
+    (function_call
+      (arguments
+        (integer)))))
