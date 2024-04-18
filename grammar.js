@@ -334,9 +334,9 @@ module.exports = grammar({
 
     function_call: $ => seq(
       choice(
-        $._builtin_function_name,
-        $._external_function_name,
-        // $._user_defined_function_name,
+        $._builtin_identifier,
+        $._external_identifier,
+        $._user_defined_identifier,
       ),
       $._function_arguments,
     ),
@@ -346,11 +346,10 @@ module.exports = grammar({
       $._function_arguments,
     ),
 
-    special_variable: $ => token(
-      // TODO: Is this list exhaustive?
-      // NOTE: Special variables are always uppercase
-      /\$([DEHIJKPQRSTXYZ]|DEVICE|ECODE|ESTACK|ETRAP|HOROLOG|IO|JOB|KEY|PRINCIPAL|QUIT|REFERENCE|SYSTEM|STACK|TEST|TLEVEL|TRESTART|XECUTE|YCORD|ZBREAK|ZCLOSE|ZDATE|ZERROR|ZJOB|ZSYSTEM|ZTRAP|ZVERSION)/,
-    ),
+    special_variable: $ => $._builtin_identifier,
+
+    _builtin_identifier: $ => /\$[A-Za-z0-9]/,
+    _external_identifier: $ => /\$&[A-Za-z0-9]/,
     
     // AKA "intrinsic" functions
     _builtin_function_name: $ => token(
@@ -363,7 +362,7 @@ module.exports = grammar({
     _external_function_name: $ => /\$&[A-Za-z0-9]+/,
     
     // Functions defined in this file
-    // _user_defined_function_name: $ => $._alphanum,
+    _user_defined_identifier : $ => /\$&[A-Za-z0-9]+/,
 
     _set: $ => /set|s|S/,
 

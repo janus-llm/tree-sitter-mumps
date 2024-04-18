@@ -1,2 +1,3 @@
-  quit $func(3)
+  quit $D(3)
+  quit $D
 

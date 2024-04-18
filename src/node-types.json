@@ -727,6 +727,11 @@
     }
   },
   {
+    "type": "special_variable",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "unary_expression",
     "named": true,
     "fields": {},
@@ -927,10 +932,6 @@
   },
   {
     "type": "integer",
-    "named": true
-  },
-  {
-    "type": "special_variable",
     "named": true
   },
   {
