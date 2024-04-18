@@ -1288,30 +1288,22 @@
     },
     "_builtin_identifier": {
       "type": "PATTERN",
-      "value": "\\$[A-Za-z0-9]"
+      "value": "\\$[A-Za-z0-9]+"
     },
     "_external_identifier": {
-      "type": "PATTERN",
-      "value": "\\$&[A-Za-z0-9]"
-    },
-    "_builtin_function_name": {
-      "type": "TOKEN",
-      "content": {
-        "type": "PREC",
-        "value": 2,
-        "content": {
-          "type": "PATTERN",
-          "value": "\\$[A-Za-z0-9]+"
-        }
-      }
-    },
-    "_external_function_name": {
       "type": "PATTERN",
       "value": "\\$&[A-Za-z0-9]+"
     },
     "_user_defined_identifier": {
-      "type": "PATTERN",
-      "value": "\\$&[A-Za-z0-9]+"
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": -1,
+        "content": {
+          "type": "PATTERN",
+          "value": "[A-Za-z0-9]+"
+        }
+      }
     },
     "_set": {
       "type": "PATTERN",

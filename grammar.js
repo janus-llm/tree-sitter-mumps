@@ -348,21 +348,14 @@ module.exports = grammar({
 
     special_variable: $ => $._builtin_identifier,
 
-    _builtin_identifier: $ => /\$[A-Za-z0-9]/,
-    _external_identifier: $ => /\$&[A-Za-z0-9]/,
-    
     // AKA "intrinsic" functions
-    _builtin_function_name: $ => token(
-      prec(2, 
-        /\$[A-Za-z0-9]+/,
-      ),
-    ),
+    _builtin_identifier: $ => /\$[A-Za-z0-9]+/,
 
     // Functions defined in other libraries
-    _external_function_name: $ => /\$&[A-Za-z0-9]+/,
+    _external_identifier: $ => /\$&[A-Za-z0-9]+/,
     
     // Functions defined in this file
-    _user_defined_identifier : $ => /\$&[A-Za-z0-9]+/,
+    _user_defined_identifier : $ => token(prec(-1, /[A-Za-z0-9]+/,),),
 
     _set: $ => /set|s|S/,
 
