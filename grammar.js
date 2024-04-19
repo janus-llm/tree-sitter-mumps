@@ -33,6 +33,7 @@ module.exports = grammar({
     _compound_statement: $ => choice(
       // $.for_statement,
       $.if_statement,
+      $.do_statement,
     ),
 
     command: $ => prec.left(
@@ -99,46 +100,7 @@ module.exports = grammar({
     keyword: $ => choice(
       // TODO: Not comprehensive!
       // Commented out keywords are used elsewhere in the grammar
-      /BREAK|B|break|b|CLOSE|C|close|c|DO|D|do|d|GOTO|G|goto|g|HALT|H|halt|h|JOB|J|job|j|KILL|K|kill|k|LOCK|L|lock|l|MERGE|M|merge|m|NEW|N|new|n|OPEN|O|open|o|QUIT|Q|quit|q|READ|R|read|r|TCOMMIT|T|tcommit|t|USE|U|use|u|VIEW|V|view|v|WRITE|W|write|w|XECUTE|X|xecute|x|ZALLOCATE|ZA|zallocate|za|ZDEALLOCATE|ZD|zdeallocate|zd|ZEDIT|ZE|zedit|ze|ZGOTO|ZG|zgoto|zg|ZHALT|ZH|zhalt|zh|ZHELP|ZH|zhelp|zh|ZININTERRUPT|ZI|zininterrupt|zi|ZJOB|ZJ|zjob|zj|ZKILL|ZK|zkill|zk|ZLINK|ZL|zlink|zl|ZMESSAGE|ZM|zmessage|zm|ZPRINT|ZP|zprint|zp|ZQUIT|ZQ|zquit|zq|ZSYSTEM|ZS|zsystem|zs|ZTCOMMIT|ZT|ztcommit|zt|ZTRAP|ZT|ztrap|zt|ZWRITE|ZW|zwrite|zw/
-      // "BREAK", "B", "break", "b",
-      // "CLOSE", "C", "close", "c",
-      // "DO", "D", "do", "d",
-      // // "ELSE", "E", "else", "e",
-      // // "FOR", "F", "for", "f",
-      // "GOTO", "G", "goto", "g",
-      // "HALT", "H", "halt", "h",
-      // // "IF", "I", "if", "i",
-      // "JOB", "J", "job", "j",
-      // "KILL", "K", "kill", "k",
-      // "LOCK", "L", "lock", "l",
-      // "MERGE", "M", "merge", "m",
-      // "NEW", "N", "new", "n",
-      // "OPEN", "O", "open", "o",
-      // "QUIT", "Q", "quit", "q",
-      // "READ", "R", "read", "r",
-      // // "SET", "S", "set", "s",
-      // "TCOMMIT", "T", "tcommit", "t",
-      // "USE", "U", "use", "u",
-      // "VIEW", "V", "view", "v",
-      // "WRITE", "W", "write", "w",
-      // "XECUTE", "X", "xecute", "x",
-      // "ZALLOCATE", "ZA", "zallocate", "za",
-      // "ZDEALLOCATE", "ZD", "zdeallocate", "zd",
-      // "ZEDIT", "ZE", "zedit", "ze",
-      // "ZGOTO", "ZG", "zgoto", "zg",
-      // "ZHALT", "ZH", "zhalt", "zh",
-      // "ZHELP", "ZH", "zhelp", "zh",
-      // "ZININTERRUPT", "ZI", "zininterrupt", "zi",
-      // "ZJOB", "ZJ", "zjob", "zj",
-      // "ZKILL", "ZK", "zkill", "zk",
-      // "ZLINK", "ZL", "zlink", "zl",
-      // "ZMESSAGE", "ZM", "zmessage", "zm",
-      // "ZPRINT", "ZP", "zprint", "zp",
-      // "ZQUIT", "ZQ", "zquit", "zq",
-      // "ZSYSTEM", "ZS", "zsystem", "zs",
-      // "ZTCOMMIT", "ZT", "ztcommit", "zt",
-      // "ZTRAP", "ZT", "ztrap", "zt",
-      // "ZWRITE", "ZW", "zwrite", "zw"
+      /BREAK|B|break|b|CLOSE|C|close|c|GOTO|G|goto|g|HALT|H|halt|h|JOB|J|job|j|KILL|K|kill|k|LOCK|L|lock|l|MERGE|M|merge|m|NEW|N|new|n|OPEN|O|open|o|QUIT|Q|quit|q|READ|R|read|r|TCOMMIT|T|tcommit|t|USE|U|use|u|VIEW|V|view|v|WRITE|W|write|w|XECUTE|X|xecute|x|ZALLOCATE|ZA|zallocate|za|ZDEALLOCATE|ZD|zdeallocate|zd|ZEDIT|ZE|zedit|ze|ZGOTO|ZG|zgoto|zg|ZHALT|ZH|zhalt|zh|ZHELP|ZH|zhelp|zh|ZININTERRUPT|ZI|zininterrupt|zi|ZJOB|ZJ|zjob|zj|ZKILL|ZK|zkill|zk|ZLINK|ZL|zlink|zl|ZMESSAGE|ZM|zmessage|zm|ZPRINT|ZP|zprint|zp|ZQUIT|ZQ|zquit|zq|ZSYSTEM|ZS|zsystem|zs|ZTCOMMIT|ZT|ztcommit|zt|ZTRAP|ZT|ztrap|zt|ZWRITE|ZW|zwrite|zw/
     ),
 
     // for_statement: $ => prec(1, 
@@ -163,6 +125,31 @@ module.exports = grammar({
         field('consequence', $._statement),
       ),
     ),
+
+    do_statement: $ => seq(
+      // TODO: Parse out args nicely?
+      /do|d|DO|D/,
+      optional($.postconditional),
+      $._routine_call,
+      repeat(
+        seq(
+          ",",
+          $._routine_call,
+        ),
+      ),
+    ),
+
+    _routine_call: $ => seq(
+      field('label', $._routine_label),
+      optional(
+        seq(
+          "^",
+          field('routine', $._routine_label),
+        ),
+      ),
+    ),
+
+    _routine_label: $ => /[A-Za-z0-9%]+/,
 
     arguments: $ => prec.left(
       seq(
@@ -330,6 +317,8 @@ module.exports = grammar({
     // },
 
     function_call: $ => seq(
+      // This handles cases where the function call should return a value - calls to functions purely for their
+      // side-effects (without a $ prefix) are handled in the DO command syntax)
       choice(
         $._builtin_identifier,
         $._external_identifier,
@@ -351,8 +340,16 @@ module.exports = grammar({
     // Functions defined in other libraries
     _external_identifier: $ => /\$&[A-Za-z0-9]+/,
     
-    // Functions defined in this file
-    _user_defined_identifier : $ => token(prec(-1, /[A-Za-z0-9]+/,),),
+    // Custom functions defined in this file
+    _user_defined_identifier: $ => seq(
+      /\$\$[A-Za-z0-9]+/,
+      optional(
+        seq(
+          "^",
+          field('label', $._routine_label),
+        ),
+      ),
+    ),
 
     _set: $ => /set|s|SET|S/,
 

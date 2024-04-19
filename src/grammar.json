@@ -66,6 +66,10 @@
         {
           "type": "SYMBOL",
           "name": "if_statement"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "do_statement"
         }
       ]
     },
@@ -241,7 +245,7 @@
       "members": [
         {
           "type": "PATTERN",
-          "value": "BREAK|B|break|b|CLOSE|C|close|c|DO|D|do|d|GOTO|G|goto|g|HALT|H|halt|h|JOB|J|job|j|KILL|K|kill|k|LOCK|L|lock|l|MERGE|M|merge|m|NEW|N|new|n|OPEN|O|open|o|QUIT|Q|quit|q|READ|R|read|r|TCOMMIT|T|tcommit|t|USE|U|use|u|VIEW|V|view|v|WRITE|W|write|w|XECUTE|X|xecute|x|ZALLOCATE|ZA|zallocate|za|ZDEALLOCATE|ZD|zdeallocate|zd|ZEDIT|ZE|zedit|ze|ZGOTO|ZG|zgoto|zg|ZHALT|ZH|zhalt|zh|ZHELP|ZH|zhelp|zh|ZININTERRUPT|ZI|zininterrupt|zi|ZJOB|ZJ|zjob|zj|ZKILL|ZK|zkill|zk|ZLINK|ZL|zlink|zl|ZMESSAGE|ZM|zmessage|zm|ZPRINT|ZP|zprint|zp|ZQUIT|ZQ|zquit|zq|ZSYSTEM|ZS|zsystem|zs|ZTCOMMIT|ZT|ztcommit|zt|ZTRAP|ZT|ztrap|zt|ZWRITE|ZW|zwrite|zw"
+          "value": "BREAK|B|break|b|CLOSE|C|close|c|GOTO|G|goto|g|HALT|H|halt|h|JOB|J|job|j|KILL|K|kill|k|LOCK|L|lock|l|MERGE|M|merge|m|NEW|N|new|n|OPEN|O|open|o|QUIT|Q|quit|q|READ|R|read|r|TCOMMIT|T|tcommit|t|USE|U|use|u|VIEW|V|view|v|WRITE|W|write|w|XECUTE|X|xecute|x|ZALLOCATE|ZA|zallocate|za|ZDEALLOCATE|ZD|zdeallocate|zd|ZEDIT|ZE|zedit|ze|ZGOTO|ZG|zgoto|zg|ZHALT|ZH|zhalt|zh|ZHELP|ZH|zhelp|zh|ZININTERRUPT|ZI|zininterrupt|zi|ZJOB|ZJ|zjob|zj|ZKILL|ZK|zkill|zk|ZLINK|ZL|zlink|zl|ZMESSAGE|ZM|zmessage|zm|ZPRINT|ZP|zprint|zp|ZQUIT|ZQ|zquit|zq|ZSYSTEM|ZS|zsystem|zs|ZTCOMMIT|ZT|ztcommit|zt|ZTRAP|ZT|ztrap|zt|ZWRITE|ZW|zwrite|zw"
         }
       ]
     },
@@ -273,6 +277,89 @@
           }
         ]
       }
+    },
+    "do_statement": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "PATTERN",
+          "value": "do|d|DO|D"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "postconditional"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_routine_call"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": ","
+              },
+              {
+                "type": "SYMBOL",
+                "name": "_routine_call"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "_routine_call": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "FIELD",
+          "name": "label",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_routine_label"
+          }
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "^"
+                },
+                {
+                  "type": "FIELD",
+                  "name": "routine",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "_routine_label"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        }
+      ]
+    },
+    "_routine_label": {
+      "type": "PATTERN",
+      "value": "[A-Za-z0-9%]+"
     },
     "arguments": {
       "type": "PREC_LEFT",
@@ -1166,15 +1253,38 @@
       "value": "\\$&[A-Za-z0-9]+"
     },
     "_user_defined_identifier": {
-      "type": "TOKEN",
-      "content": {
-        "type": "PREC",
-        "value": -1,
-        "content": {
+      "type": "SEQ",
+      "members": [
+        {
           "type": "PATTERN",
-          "value": "[A-Za-z0-9]+"
+          "value": "\\$\\$[A-Za-z0-9]+"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "^"
+                },
+                {
+                  "type": "FIELD",
+                  "name": "label",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "_routine_label"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         }
-      }
+      ]
     },
     "_set": {
       "type": "PATTERN",

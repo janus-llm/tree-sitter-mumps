@@ -39,3 +39,33 @@ Lvalue Assignment
             (local_variable)
             (local_variable)))
         (string)))
+==================
+User Defined Function Calls
+==================
+ S VAR1=$$MYFUNC1("string")  ; Call a user defined function
+ S VAR2=$$MYFUNC2^SOMEROUTINE("string")  ; Call a user defined function in a specific routine
+---
+(program
+  (assignment
+    (local_variable)
+    (function_call
+      (arguments
+        (string))))
+  (comment)
+  (assignment
+    (local_variable)
+    (function_call
+      (arguments
+        (string))))
+  (comment))
+==================
+Function Call Without Return Value
+==================
+ DO MYFUNC1  ; Call a user defined function, purely for side-effects
+ DO MYFUNC2^SOMEROUTINE  ; Call a user defined function in a specific routine, purely for side-effects
+---
+(program
+  (do_statement)
+  (comment)
+  (do_statement)
+  (comment))
