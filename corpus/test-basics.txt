@@ -18,16 +18,17 @@ Comments
   (comment)
 )
 ==================
-Commands
+Write Commands and Format Specifiers
 ==================
   write "There were 8",!
   quit
 ---
 (program
   (command
-  (arguments
-    (string)
-    (format_specifier)))
+    (keyword)
+    (arguments
+      (string)
+      (format_specifier)))
   (command
     (keyword)))
 ==================
@@ -70,3 +71,28 @@ Arithmetic Expressions
     )
   )
 )
+==================
+Command Cases
+==================
+  Q 1
+  QUIT 1
+  q 1
+  quit 1
+---
+(program
+  (command
+    (keyword)
+    (arguments
+      (integer)))
+  (command
+    (keyword)
+    (arguments
+      (integer)))
+  (command
+    (keyword)
+    (arguments
+      (integer)))
+  (command
+    (keyword)
+    (arguments
+      (integer))))

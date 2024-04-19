@@ -12,6 +12,7 @@
 (program
   (comment)
   (command
+    (keyword)
     (arguments
       (string)
       (format_specifier)))
@@ -76,6 +77,7 @@ Associative Arrays
 (program
   (comment)
   (command
+    (keyword)
     (arguments
       (string)
       (format_specifier)))
@@ -104,6 +106,7 @@ Associative Arrays
         (integer)))
     (string))
   (command
+    (keyword)
     (arguments
       (string)
       (local_array

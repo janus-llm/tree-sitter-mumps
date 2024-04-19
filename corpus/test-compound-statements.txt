@@ -16,14 +16,14 @@ If Statement
       (local_variable)
       (integer))))
 ==================
-Single Line For Statement
+Single Line For Statement TODO
 ==================
   F X=0:1:2 S ^ARRAY(X)=$FUNC(1, 2)
 ---
 (program
 )
 ==================
-Single Line For Statement - Infinite Loop
+Single Line For Statement - Infinite Loop TODO
 ==================
   F S VAR1=$FUNC(1, 2) Q:'VAR2
 ---

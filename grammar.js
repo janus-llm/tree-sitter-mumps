@@ -31,15 +31,12 @@ module.exports = grammar({
 
     // Multi-part statements
     _compound_statement: $ => choice(
-      $.for_statement,
+      // $.for_statement,
       $.if_statement,
     ),
 
     command: $ => prec.left(
-      choice(
-        $._write_read_command,
-        $._typical_command,
-      ),
+      $._typical_command,
     ),
 
     comment: $ => choice(
@@ -81,7 +78,6 @@ module.exports = grammar({
               "=",
               "=+",
             ),
-            $._expression,
             field(
               'right', $._expression,
             ),
@@ -101,72 +97,62 @@ module.exports = grammar({
     ),
 
     keyword: $ => choice(
-      // // TODO: Not comprehensive!
-      /[Bb]|[Bb]reak|[Cc]|[Cc]lose|[Dd]|[Dd]o|[Gg]|[Gg]oto|[Hh]|[Hh]alt|[Hh]ang|[Jj]|[Jj]ob|[Ll]|[Ll]ock|[Kk]|[Kk]ill|[Mm]|[Mm]erge|[Nn]|[Nn]ew|[Oo]|[Oo]pen|[Qq]|[Qq]uit|[Tt][Cc]|[Tt]commit|[Tt][Rr][Ee]|[Tt]restart|[Tt][Rr][Oo]|[Tt]rollback|[Tt][Ss]|[Tt]start|[Uu]|[Uu]se|[Vv]|[Vv]iew|[Xx]|[Xx]ecute|[Zz]/
-      // NOTE: Some commands are excluded, since they represent other basic functionality:
-      // "e", "else",  // special case (if_statement)
-      // "f", "for",  // special case (for_statement)
-      // "i", "if",  // special case (if_statement)
-      // "r", "read",  // special case (_write_read_command)
-      // "s", "set",  // special case (assignment) 
-      // "w", "write", // special case (_write_read_command)
+      // TODO: Not comprehensive!
+      // Commented out keywords are used elsewhere in the grammar
+      /BREAK|B|break|b|CLOSE|C|close|c|DO|D|do|d|GOTO|G|goto|g|HALT|H|halt|h|JOB|J|job|j|KILL|K|kill|k|LOCK|L|lock|l|MERGE|M|merge|m|NEW|N|new|n|OPEN|O|open|o|QUIT|Q|quit|q|READ|R|read|r|TCOMMIT|T|tcommit|t|USE|U|use|u|VIEW|V|view|v|WRITE|W|write|w|XECUTE|X|xecute|x|ZALLOCATE|ZA|zallocate|za|ZDEALLOCATE|ZD|zdeallocate|zd|ZEDIT|ZE|zedit|ze|ZGOTO|ZG|zgoto|zg|ZHALT|ZH|zhalt|zh|ZHELP|ZH|zhelp|zh|ZININTERRUPT|ZI|zininterrupt|zi|ZJOB|ZJ|zjob|zj|ZKILL|ZK|zkill|zk|ZLINK|ZL|zlink|zl|ZMESSAGE|ZM|zmessage|zm|ZPRINT|ZP|zprint|zp|ZQUIT|ZQ|zquit|zq|ZSYSTEM|ZS|zsystem|zs|ZTCOMMIT|ZT|ztcommit|zt|ZTRAP|ZT|ztrap|zt|ZWRITE|ZW|zwrite|zw/
+      // "BREAK", "B", "break", "b",
+      // "CLOSE", "C", "close", "c",
+      // "DO", "D", "do", "d",
+      // // "ELSE", "E", "else", "e",
+      // // "FOR", "F", "for", "f",
+      // "GOTO", "G", "goto", "g",
+      // "HALT", "H", "halt", "h",
+      // // "IF", "I", "if", "i",
+      // "JOB", "J", "job", "j",
+      // "KILL", "K", "kill", "k",
+      // "LOCK", "L", "lock", "l",
+      // "MERGE", "M", "merge", "m",
+      // "NEW", "N", "new", "n",
+      // "OPEN", "O", "open", "o",
+      // "QUIT", "Q", "quit", "q",
+      // "READ", "R", "read", "r",
+      // // "SET", "S", "set", "s",
+      // "TCOMMIT", "T", "tcommit", "t",
+      // "USE", "U", "use", "u",
+      // "VIEW", "V", "view", "v",
+      // "WRITE", "W", "write", "w",
+      // "XECUTE", "X", "xecute", "x",
+      // "ZALLOCATE", "ZA", "zallocate", "za",
+      // "ZDEALLOCATE", "ZD", "zdeallocate", "zd",
+      // "ZEDIT", "ZE", "zedit", "ze",
+      // "ZGOTO", "ZG", "zgoto", "zg",
+      // "ZHALT", "ZH", "zhalt", "zh",
+      // "ZHELP", "ZH", "zhelp", "zh",
+      // "ZININTERRUPT", "ZI", "zininterrupt", "zi",
+      // "ZJOB", "ZJ", "zjob", "zj",
+      // "ZKILL", "ZK", "zkill", "zk",
+      // "ZLINK", "ZL", "zlink", "zl",
+      // "ZMESSAGE", "ZM", "zmessage", "zm",
+      // "ZPRINT", "ZP", "zprint", "zp",
+      // "ZQUIT", "ZQ", "zquit", "zq",
+      // "ZSYSTEM", "ZS", "zsystem", "zs",
+      // "ZTCOMMIT", "ZT", "ztcommit", "zt",
+      // "ZTRAP", "ZT", "ztrap", "zt",
+      // "ZWRITE", "ZW", "zwrite", "zw"
     ),
 
-    for_statement: $ => prec(2, 
-      seq(
-        // Loop with range
-        seq(
-          /for|f|FOR|F/,
-          // Not required, infinite loop without
-          optional(
-            field('control_variable', $._identifier),
-          ),
-          // Not required - without an initializer, the for loop won't modify the variable before it starts: `S I = 5 F I::2:20 <body>`
-          optional(
-            field('initializer', $._loop_initializer),
-          ),
-          // Not required - without a step value, the variable is incremented by 1 each loop: `F I=1::10 <body>`
-          optional(
-            seq(
-              ":",
-              field('step value', $._expression),
-            ),
-          ),
-          // Not required - without a stop value, the loop continues indefintely, until a quit is reached: `F I <body> <quit>`
-          optional(
-            seq(
-              ":",
-              field('stop value', $._expression),
-            ),
-          ),
-         $._statement,
-        ),
-      ),
-    ),
-
-    _loop_initializer: $ => choice(
-      seq(
-        "=",
-        $._expression,
-      ),
-    ),
-
-    _loop_range: $ => seq(  // TODO: What is this called?
-      // TODO: This could probably be any expression
-      choice(
-        $._variable,
-        $._literal,
-      ),
-      repeat(   // Not using repeat1 here, since maybe you can do for i=1 do
-        seq(
-          ":",
-          choice(
-            $._variable,
-            $._literal,
-          ),
-        ),
-      ),
-    ),
+    // for_statement: $ => prec(1, 
+    //   /for|f|FOR|F/,
+    //   choice(
+    //     // Infinite loop, no control var e.g. `F <body> Q`
+    //     // Infinite loop, with control var e.g. `F J <body> Q`
+    //     // Finite loop, with control var but no initializer e.g. `S I = 5 ... F I::2:20 <body>`
+    //     // Finite loop over a 'list' of literals e.g. `F VAR="STR1","STR2"` 
+    //     // Finite loop with full loop control: `F I=1 1:1:10 <body>`
+    //     field('control_variable', $._identifier),
+    //     field('initializer', $._loop_initializer),
+    //     field('step value', $._expression),
+    //     field('stop value', $._expression),
 
     // Unlike python, I don't think we have 'conditional_expression's - my impression is that this is 
     // it's own command / line, not something that goes in to arguments, say
@@ -343,14 +329,6 @@ module.exports = grammar({
     //   ))));
     // },
 
-    // Calls to write end in ,!
-    _write_read_command: $ => prec(2,
-      seq(
-        /write|w|read|r|WRITE|W|READ|R/,
-        $.arguments,
-      ),
-    ),
-
     function_call: $ => seq(
       choice(
         $._builtin_identifier,
@@ -376,7 +354,7 @@ module.exports = grammar({
     // Functions defined in this file
     _user_defined_identifier : $ => token(prec(-1, /[A-Za-z0-9]+/,),),
 
-    _set: $ => /set|s|S/,
+    _set: $ => /set|s|SET|S/,
 
     _numeric: $ => /[0-9]+/,
     // _alphanum: $ => /[A-Za-z0-9]+/,

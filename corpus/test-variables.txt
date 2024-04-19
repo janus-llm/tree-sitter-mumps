@@ -56,3 +56,26 @@ Special Variables
     (function_call
       (arguments
         (integer)))))
+==================
+Multiple Assignment
+==================
+  SET A=1,B=2,C=3
+  WRITE A,!,B,!,C,!
+---
+(program
+  (assignment
+    (local_variable)
+    (integer)
+    (local_variable)
+    (integer)
+    (local_variable)
+    (integer))
+  (command
+    (keyword)
+    (arguments
+      (local_variable)
+      (format_specifier)
+      (local_variable)
+      (format_specifier)
+      (local_variable)
+      (format_specifier))))

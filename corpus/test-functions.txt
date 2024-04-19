@@ -19,8 +19,23 @@ Function Call vs. Special Variable
 (program
     (assignment
       (local_variable)
+      (special_variable))
+    (assignment
+      (local_variable)
       (function_call
         (arguments
           (local_variable)
           (local_variable)))))
-
+==================
+Lvalue Assignment
+==================
+  SET $EXTRACT(A,B,C)="MUMPS"
+---
+(program
+      (assignment
+        (lvalue_function_call
+          (arguments
+            (local_variable)
+            (local_variable)
+            (local_variable)))
+        (string)))
