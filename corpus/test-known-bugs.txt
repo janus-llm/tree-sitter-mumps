@@ -36,3 +36,8 @@ TODO: Another Write Syntax?
     (command)
       (arguments
         (string))))
+==================
+TODO: Another Multiple Assignment Syntax? 
+==================
+ S (WIILN,WIIX)=0 
+---
