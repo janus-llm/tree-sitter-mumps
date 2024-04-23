@@ -5,6 +5,9 @@ module.exports = grammar({
   externals: $ => [
     $._line_comment, // scanner.c checks for ; in column 0
     $._label, // scanner.c checks for non-; non-ws in column 0
+    $._indent,
+    $._dedent,
+    $._indentation_marker,
   ],
 
   rules: {
@@ -32,8 +35,24 @@ module.exports = grammar({
     // Multi-part statements
     _compound_statement: $ => choice(
       // $.for_statement,
+      $.while_statement,
       $.if_statement,
       $.do_statement,
+    ),
+
+    block: $ => seq(
+      $._indent,
+      repeat1(
+        choice(
+          seq(
+            optional(
+              $._indentation_marker,
+            ),
+            $._statement,
+          ),
+        ),
+      ),
+      $._dedent,
     ),
 
     command: $ => prec.left(
@@ -116,30 +135,86 @@ module.exports = grammar({
     //     field('step value', $._expression),
     //     field('stop value', $._expression),
 
+    for_statement: $ => seq(
+      /for|f|FOR|F/,
+      optional($._loop_control),
+      choice(
+        // Indented 
+        $.block,
+        // Non-indented
+        $._statement,
+      ),
+    ),
+
+    _loop_control: $ => seq(
+      field('initializer', $._loop_initializer),
+      field('step value', $._expression),
+      field('stop value', $._expression),
+    ),
+    _loop_initializer: $ => seq(
+      field('control_variable', $._identifier),
+      "=",
+      $._identifier,
+    ),
+
     // Unlike python, I don't think we have 'conditional_expression's - my impression is that this is 
     // it's own command / line, not something that goes in to arguments, say
     if_statement: $ => prec.left(3,
       seq(
         /if|i|IF|I/,
         field('condition', $._expression),
-        field('consequence', $._statement),
-      ),
-    ),
-
-    do_statement: $ => seq(
-      // TODO: Parse out args nicely?
-      /do|d|DO|D/,
-      optional($.postconditional),
-      $._routine_call,
-      repeat(
-        seq(
-          ",",
-          $._routine_call,
+        field('consequence', 
+          choice(
+            $.block,
+            $._statement,
+          ),
+        ),
+        optional(
+          seq(
+            /else|e|ELSE|E/,
+            field('alternative',
+              choice(
+                $.block,
+                $._statement,
+              ),
+            ),
+          ),
         ),
       ),
     ),
 
+    while_statement: $ => seq(
+      /while|w|WHILE|W/,
+      field('condition', $._expression),
+      choice(
+        // Indented 
+        $.block,
+        // Non-indented
+        $._statement,
+      ),
+    ),
+
+    do_statement: $ => seq(
+      /do|d|DO|D/,
+      choice(
+        // Indented 
+        $.block,
+        // Non-indented
+        seq(
+          $._routine_call,
+          repeat(
+            seq(
+              ",",
+              $._routine_call,
+            ),
+          ),
+        ),
+        $.command,
+      ),
+    ),
+
     _routine_call: $ => seq(
+      optional("^"),
       field('label', $._routine_label),
       optional(
         seq(
