@@ -228,15 +228,17 @@ module.exports = grammar({
 
     arguments: $ => prec.left(
       seq(
-        field('argument', $._expression),
+        $.argument,
         repeat(
           seq(
             ",",
-            field('argument', $._expression),
+            $.argument,
           ),
         ),
       ),
     ),
+
+    argument: $ => $._expression,
 
     label: $ => prec(3,
       $._label, // This just allows for cases like function declarations where we want to parse a label and not name it

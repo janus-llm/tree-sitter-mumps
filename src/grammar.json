@@ -589,12 +589,8 @@
         "type": "SEQ",
         "members": [
           {
-            "type": "FIELD",
-            "name": "argument",
-            "content": {
-              "type": "SYMBOL",
-              "name": "_expression"
-            }
+            "type": "SYMBOL",
+            "name": "argument"
           },
           {
             "type": "REPEAT",
@@ -606,18 +602,18 @@
                   "value": ","
                 },
                 {
-                  "type": "FIELD",
-                  "name": "argument",
-                  "content": {
-                    "type": "SYMBOL",
-                    "name": "_expression"
-                  }
+                  "type": "SYMBOL",
+                  "name": "argument"
                 }
               ]
             }
           }
         ]
       }
+    },
+    "argument": {
+      "type": "SYMBOL",
+      "name": "_expression"
     },
     "label": {
       "type": "PREC",
