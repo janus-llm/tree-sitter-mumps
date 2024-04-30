@@ -14,12 +14,18 @@ module.exports = grammar({
     program: $ => repeat1($._statement),
 
     _statement: $ => seq(
-      optional(
-        $.label,
-      ),
       choice(
-        $._simple_statement,
-        $._compound_statement,
+        seq(
+          $._label,
+          $._eol_comment,
+        ),
+        seq(
+          optional($.label),
+          choice(
+            $._simple_statement,
+            $._compound_statement,
+          ),
+        ),
       ),
     ),
 
@@ -34,7 +40,8 @@ module.exports = grammar({
 
     // Multi-part statements
     _compound_statement: $ => choice(
-      // $.for_statement,
+      $.function_definition,
+      $.for_statement,
       $.while_statement,
       $.if_statement,
       $.do_statement,
@@ -45,11 +52,12 @@ module.exports = grammar({
       repeat1(
         choice(
           seq(
-            optional(
+            repeat(
               $._indentation_marker,
             ),
             $._statement,
           ),
+          $.block,
         ),
       ),
       $._dedent,
@@ -137,7 +145,8 @@ module.exports = grammar({
 
     for_statement: $ => seq(
       /for|f|FOR|F/,
-      optional($._loop_control),
+      $.loop_control,
+      // $.loop_control,
       choice(
         // Indented 
         $.block,
@@ -146,11 +155,17 @@ module.exports = grammar({
       ),
     ),
 
-    _loop_control: $ => seq(
-      field('initializer', $._loop_initializer),
-      field('step value', $._expression),
-      field('stop value', $._expression),
+    // _loop_control: $ => /LOOP/,
+    loop_control: $ => seq(
+      $._identifier,
+      "=",
+      $._expression,
+      ":",
+      $._expression,
+      ":",
+      $._expression,
     ),
+
     _loop_initializer: $ => seq(
       field('control_variable', $._identifier),
       "=",
@@ -163,6 +178,13 @@ module.exports = grammar({
       seq(
         /if|i|IF|I/,
         field('condition', $._expression),
+        repeat(
+          seq(
+            ",",
+            // "The infamous mumps comma": https://groups.google.com/g/hardhats/c/RwB8H2VEw_M
+            field('condition', $._expression),
+          ),
+        ),
         field('consequence', 
           choice(
             $.block,
@@ -213,6 +235,13 @@ module.exports = grammar({
       ),
     ),
 
+    function_definition: $ => seq(
+      $.label,
+      $._function_arguments,
+      optional($.comment),
+      $.block,
+    ),
+
     _routine_call: $ => seq(
       optional("^"),
       field('label', $._routine_label),
@@ -222,6 +251,7 @@ module.exports = grammar({
           field('routine', $._routine_label),
         ),
       ),
+      optional($._function_arguments),
     ),
 
     _routine_label: $ => /[A-Za-z0-9%]+/,
@@ -244,15 +274,19 @@ module.exports = grammar({
       $._label, // This just allows for cases like function declarations where we want to parse a label and not name it
     ),
 
-    _function_arguments: $ => seq(
-      "(",
-      $.arguments,
-      ")",
+    _function_arguments: $ => choice(
+      "()",
+      seq(
+        "(",
+        $.arguments,
+        ")",
+      ),
     ),
+
         
     parameter: $ => $._expression,
 
-    _eol_comment: $ => token(seq(';', /.*/)),
+    _eol_comment: $ => token(seq(';', /.*\n/)),
 
     postconditional: $ => seq(
       ":",
@@ -475,7 +509,7 @@ module.exports = grammar({
     // Anything in quotes is OK, I assume
     string: $ => /("[^"]*")+/,
 
-    format_specifier: $ => /[0-9!?#/;]+/,
+    format_specifier: $ => token(prec(-1, /[0-9!?#/;]+/)),
 
     // Per docs: "the values in a string are, at a minimum, any ASCII character code between 32 to 127 (decimal) inclusive"
     // TODO: Currently excluding:
