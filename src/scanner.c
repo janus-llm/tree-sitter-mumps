@@ -129,12 +129,13 @@ bool tree_sitter_mumps_external_scanner_scan(void *payload, TSLexer *lexer,
         scan_space(lexer);
         if ((lexer->lookahead == 10) && (lexer->eof(lexer) == false)){
             // If this line is at a greater indent level than we were at before, then this is an INDENT
-            if (get_line_indent(lexer) > scanner->indent_level) {
+            int line_indent_level = get_line_indent(lexer);
+            if (line_indent_level > scanner->indent_level) {
                 scanner->indent_level++;
                 lexer->result_symbol = INDENT;
                 return true;
             }
-            else if (get_line_indent(lexer) < scanner->indent_level) {
+            else if (line_indent_level < scanner->indent_level) {
                 scanner->indent_level--;
                 lexer->result_symbol = DEDENT;
                 return true;
