@@ -381,6 +381,10 @@
           "named": true
         },
         {
+          "type": "new_command",
+          "named": true
+        },
+        {
           "type": "postconditional",
           "named": true
         }
@@ -790,6 +794,25 @@
       "types": [
         {
           "type": "arguments",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "new_command",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "arguments",
+          "named": true
+        },
+        {
+          "type": "postconditional",
           "named": true
         }
       ]

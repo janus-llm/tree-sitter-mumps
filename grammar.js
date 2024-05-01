@@ -64,7 +64,10 @@ module.exports = grammar({
     ),
 
     command: $ => prec.left(
-      $._typical_command,
+      choice(
+        $._typical_command,
+        $._new_command,
+      ),
     ),
 
     comment: $ => choice(
@@ -124,10 +127,18 @@ module.exports = grammar({
       ),
     ),
 
+    _new_command:$ => seq(
+      /new|n|NEW|N/,
+      optional(
+        $.postconditional,
+      ),
+      $.arguments,
+    ),
+
     keyword: $ => choice(
       // TODO: Not comprehensive!
       // Commented out keywords are used elsewhere in the grammar
-      /BREAK|B|break|b|CLOSE|C|close|c|GOTO|G|goto|g|HALT|H|halt|h|JOB|J|job|j|KILL|K|kill|k|LOCK|L|lock|l|MERGE|M|merge|m|NEW|N|new|n|OPEN|O|open|o|QUIT|Q|quit|q|READ|R|read|r|TCOMMIT|T|tcommit|t|USE|U|use|u|VIEW|V|view|v|WRITE|W|write|w|XECUTE|X|xecute|x|ZALLOCATE|ZA|zallocate|za|ZDEALLOCATE|ZD|zdeallocate|zd|ZEDIT|ZE|zedit|ze|ZGOTO|ZG|zgoto|zg|ZHALT|ZH|zhalt|zh|ZHELP|ZH|zhelp|zh|ZININTERRUPT|ZI|zininterrupt|zi|ZJOB|ZJ|zjob|zj|ZKILL|ZK|zkill|zk|ZLINK|ZL|zlink|zl|ZMESSAGE|ZM|zmessage|zm|ZPRINT|ZP|zprint|zp|ZQUIT|ZQ|zquit|zq|ZSYSTEM|ZS|zsystem|zs|ZTCOMMIT|ZT|ztcommit|zt|ZTRAP|ZT|ztrap|zt|ZWRITE|ZW|zwrite|zw/
+      /BREAK|B|break|b|CLOSE|C|close|c|GOTO|G|goto|g|HALT|H|halt|h|JOB|J|job|j|KILL|K|kill|k|LOCK|L|lock|l|MERGE|M|merge|m|OPEN|O|open|o|QUIT|Q|quit|q|READ|R|read|r|TCOMMIT|T|tcommit|t|USE|U|use|u|VIEW|V|view|v|WRITE|W|write|w|XECUTE|X|xecute|x|ZALLOCATE|ZA|zallocate|za|ZDEALLOCATE|ZD|zdeallocate|zd|ZEDIT|ZE|zedit|ze|ZGOTO|ZG|zgoto|zg|ZHALT|ZH|zhalt|zh|ZHELP|ZH|zhelp|zh|ZININTERRUPT|ZI|zininterrupt|zi|ZJOB|ZJ|zjob|zj|ZKILL|ZK|zkill|zk|ZLINK|ZL|zlink|zl|ZMESSAGE|ZM|zmessage|zm|ZPRINT|ZP|zprint|zp|ZQUIT|ZQ|zquit|zq|ZSYSTEM|ZS|zsystem|zs|ZTCOMMIT|ZT|ztcommit|zt|ZTRAP|ZT|ztrap|zt|ZWRITE|ZW|zwrite|zw/
     ),
 
     // for_statement: $ => prec(1, 
@@ -157,19 +168,21 @@ module.exports = grammar({
 
     // _loop_control: $ => /LOOP/,
     loop_control: $ => seq(
-      $._identifier,
-      "=",
-      $._expression,
+      $._loop_initializer,
+      optional(
+        seq(
+          ":",
+          field('step_value', $._expression),
+        ),
+      ),
       ":",
-      $._expression,
-      ":",
-      $._expression,
+      field('stop_value', $._expression),
     ),
 
     _loop_initializer: $ => seq(
       field('control_variable', $._identifier),
       "=",
-      $._identifier,
+      field('start_value', $._identifier),
     ),
 
     // Unlike python, I don't think we have 'conditional_expression's - my impression is that this is 
@@ -223,11 +236,11 @@ module.exports = grammar({
         $.block,
         // Non-indented
         seq(
-          $._routine_call,
+          $.routine_call,
           repeat(
             seq(
               ",",
-              $._routine_call,
+              $.routine_call,
             ),
           ),
         ),
@@ -242,7 +255,7 @@ module.exports = grammar({
       $.block,
     ),
 
-    _routine_call: $ => seq(
+    routine_call: $ => seq(
       optional("^"),
       field('label', $._routine_label),
       optional(

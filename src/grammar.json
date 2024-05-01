@@ -153,8 +153,17 @@
       "type": "PREC_LEFT",
       "value": 0,
       "content": {
-        "type": "SYMBOL",
-        "name": "_typical_command"
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "SYMBOL",
+            "name": "_typical_command"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "new_command"
+          }
+        ]
       }
     },
     "comment": {
@@ -316,12 +325,37 @@
         }
       ]
     },
+    "new_command": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "PATTERN",
+          "value": "new|n|NEW|N"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "postconditional"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "arguments"
+        }
+      ]
+    },
     "keyword": {
       "type": "CHOICE",
       "members": [
         {
           "type": "PATTERN",
-          "value": "BREAK|B|break|b|CLOSE|C|close|c|GOTO|G|goto|g|HALT|H|halt|h|JOB|J|job|j|KILL|K|kill|k|LOCK|L|lock|l|MERGE|M|merge|m|NEW|N|new|n|OPEN|O|open|o|QUIT|Q|quit|q|READ|R|read|r|TCOMMIT|T|tcommit|t|USE|U|use|u|VIEW|V|view|v|WRITE|W|write|w|XECUTE|X|xecute|x|ZALLOCATE|ZA|zallocate|za|ZDEALLOCATE|ZD|zdeallocate|zd|ZEDIT|ZE|zedit|ze|ZGOTO|ZG|zgoto|zg|ZHALT|ZH|zhalt|zh|ZHELP|ZH|zhelp|zh|ZININTERRUPT|ZI|zininterrupt|zi|ZJOB|ZJ|zjob|zj|ZKILL|ZK|zkill|zk|ZLINK|ZL|zlink|zl|ZMESSAGE|ZM|zmessage|zm|ZPRINT|ZP|zprint|zp|ZQUIT|ZQ|zquit|zq|ZSYSTEM|ZS|zsystem|zs|ZTCOMMIT|ZT|ztcommit|zt|ZTRAP|ZT|ztrap|zt|ZWRITE|ZW|zwrite|zw"
+          "value": "BREAK|B|break|b|CLOSE|C|close|c|GOTO|G|goto|g|HALT|H|halt|h|JOB|J|job|j|KILL|K|kill|k|LOCK|L|lock|l|MERGE|M|merge|m|OPEN|O|open|o|QUIT|Q|quit|q|READ|R|read|r|TCOMMIT|T|tcommit|t|USE|U|use|u|VIEW|V|view|v|WRITE|W|write|w|XECUTE|X|xecute|x|ZALLOCATE|ZA|zallocate|za|ZDEALLOCATE|ZD|zdeallocate|zd|ZEDIT|ZE|zedit|ze|ZGOTO|ZG|zgoto|zg|ZHALT|ZH|zhalt|zh|ZHELP|ZH|zhelp|zh|ZININTERRUPT|ZI|zininterrupt|zi|ZJOB|ZJ|zjob|zj|ZKILL|ZK|zkill|zk|ZLINK|ZL|zlink|zl|ZMESSAGE|ZM|zmessage|zm|ZPRINT|ZP|zprint|zp|ZQUIT|ZQ|zquit|zq|ZSYSTEM|ZS|zsystem|zs|ZTCOMMIT|ZT|ztcommit|zt|ZTRAP|ZT|ztrap|zt|ZWRITE|ZW|zwrite|zw"
         }
       ]
     },
