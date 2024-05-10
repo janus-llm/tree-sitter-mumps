@@ -355,6 +355,15 @@ module.exports = grammar({
 
     // _loop_initializer: $ => seq(
     // ),
+    //
+
+    if_assign: $ => prec(4, 
+      seq(
+        /if|i|IF|I/,
+        /set|s|SET|S/,
+        $._expression,
+      ),
+    ),
 
     // Unlike python, I don't think we have 'conditional_expression's - my impression is that this is 
     // it's own command / line, not something that goes in to arguments, say
@@ -466,7 +475,7 @@ module.exports = grammar({
 
     argument: $ => $._expression,
 
-    label: $ => prec(3,
+    label: $ => prec(9,
       $._label, // This just allows for cases like function declarations where we want to parse a label and not name it
     ),
 
