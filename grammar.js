@@ -4,7 +4,7 @@ module.exports = grammar({
   // We use src/scanner.c to handle context sensitive tokens, such as names
   externals: $ => [
     $._line_comment, // scanner.c checks for ; in column 0
-    $._label, // scanner.c checks for non-; non-ws in column 0
+    $.label, // scanner.c checks for non-; non-ws in column 0
     $._indent,
     $._dedent,
   ],
@@ -16,30 +16,27 @@ module.exports = grammar({
   rules: {
     program: $ => repeat1($.routine_definition),
 
-    _statement: $ => prec.left(5, 
-      seq(
-        choice(
-          $.routine_definition,
-          seq(
-            choice(
-              $._simple_statement,
-              $._compound_statement,
-            ),
-          ),
-        ),
-        optional(
-          $._newline,
-        ),
-      ),
-    ),
-    
-    routine_definition: $ => prec.left(
+    routine_definition: $ => seq(
       seq(
         $.label,
         optional($._function_arguments),
         choice(
           repeat($._statement), // Single line routine case
           $.block, // Code block routine case
+        ),
+      ),
+    ),
+
+    _statement: $ => prec.left(5, 
+      seq(
+        seq(
+          choice(
+            $._simple_statement,
+            $._compound_statement,
+          ),
+        ),
+        optional(
+          $._newline,
         ),
       ),
     ),
@@ -111,6 +108,7 @@ module.exports = grammar({
             $._identifier,
             $.lvalue_function_call,
             $._multiple_assignment_identifiers,
+            $.indirection,
           ),
         ),
         choice(
@@ -355,6 +353,15 @@ module.exports = grammar({
 
     // _loop_initializer: $ => seq(
     // ),
+    //
+
+    if_assign: $ => prec(4, 
+      seq(
+        /if|i|IF|I/,
+        /set|s|SET|S/,
+        $._expression,
+      ),
+    ),
 
     // Unlike python, I don't think we have 'conditional_expression's - my impression is that this is 
     // it's own command / line, not something that goes in to arguments, say
@@ -407,6 +414,15 @@ module.exports = grammar({
       ),
     ),
 
+    simple_call: $ => prec(9,
+      seq(
+        $.call_keyword,
+        $.routine_call,
+      ),
+    ),
+
+    call_keyword: $ => /do|d|DO|D|goto|g|GOTO|G/,
+
     do_statement: $ => seq(
       /do|d|DO|D/,
       choice(
@@ -438,16 +454,21 @@ module.exports = grammar({
     //   $.block,
     // ),
 
-    routine_call: $ => seq(
-      optional("^"),
-      field('label', $._routine_label),
-      optional(
-        seq(
-          "^",
-          field('routine', $._routine_label),
+    routine_call: $ => choice(
+      seq(
+        optional("^"),
+        field('label', $._routine_label),
+        optional(
+          seq(
+            "^",
+            field('routine', $._routine_label),
+          ),
         ),
+        optional($._function_arguments),
       ),
-      optional($._function_arguments),
+      prec(-1, 
+        $.indirection,
+      ),
     ),
 
     _routine_label: $ => /[A-Za-z0-9%]+/,
@@ -466,9 +487,9 @@ module.exports = grammar({
 
     argument: $ => $._expression,
 
-    label: $ => prec(3,
-      $._label, // This just allows for cases like function declarations where we want to parse a label and not name it
-    ),
+    // label: $ => prec(9,
+    //   $._label, // This just allows for cases like function declarations where we want to parse a label and not name it
+    // ),
 
     _function_arguments: $ => choice(
       "()",
@@ -553,7 +574,7 @@ module.exports = grammar({
     // A Mumps variable name must begin with a letter or percent sign (%) and may be followed by letters, percent signs, or numbers.
     // TODO: The underscore (_) and dollar sign ($) characters are not legal in variable names.
     // https://stackoverflow.com/questions/32967395/exclude-characters-from-group-regex-while-still-looking-for-characters
-    _variable_name: $ => /[a-zA-Z%][a-zA-Z0-9%]*/,
+    _variable_name: $ => /[a-zA-Z%][a-zA-Z0-9@%]*/,
 
     local_variable: $ => $._variable_name,
 
@@ -568,8 +589,15 @@ module.exports = grammar({
         seq('-', $._expression),  // Negative
         // seq('!', $._expression), TODO!
         seq('\'', $._expression),  // Not
-        seq('@', $._expression),  // Indirection
         seq('.', $._expression),  // Reference
+        $.indirection,
+      ),
+    ),
+
+    indirection: $ => prec(2,
+        seq(
+        '@',
+        $._expression,
       ),
     ),
 
@@ -600,7 +628,6 @@ module.exports = grammar({
         prec.left(1, seq($._expression, '\'[', $._expression)),  // Does not contain
         prec.left(1, seq($._expression, '\']', $._expression)),  // Does not follow 
         prec.left(1, seq($._expression, '\']]', $._expression)),  // Not sorts after 
-        prec.left(1, seq($._expression, '_', $._expression)),  // String concatenation
         // String operators
         prec.left(1, seq($._expression, '_', $._expression)),  // String concatenation
         // Logical operators
@@ -697,6 +724,7 @@ module.exports = grammar({
       $.float,
       $.boolean,
       $.format_specifier,
+      $.control_code,
     ),
 
     // TODO: I don't know if this is real
@@ -730,6 +758,8 @@ module.exports = grammar({
     string: $ => /("[^"]*")+/,
 
     format_specifier: $ => token(prec(-1, /[0-9!?#/;]+/)),
+
+    control_code: $ => token(prec(-1, /\*[0-9]+/)),
 
     // Per docs: "the values in a string are, at a minimum, any ASCII character code between 32 to 127 (decimal) inclusive"
     // TODO: Currently excluding:
