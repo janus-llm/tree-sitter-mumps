@@ -108,6 +108,7 @@ module.exports = grammar({
             $._identifier,
             $.lvalue_function_call,
             $._multiple_assignment_identifiers,
+            $.indirection,
           ),
         ),
         choice(
@@ -413,6 +414,15 @@ module.exports = grammar({
       ),
     ),
 
+    simple_call: $ => prec(9,
+      seq(
+        $.call_keyword,
+        $.routine_call,
+      ),
+    ),
+
+    call_keyword: $ => /do|d|DO|D|goto|g|GOTO|G/,
+
     do_statement: $ => seq(
       /do|d|DO|D/,
       choice(
@@ -564,7 +574,7 @@ module.exports = grammar({
     // A Mumps variable name must begin with a letter or percent sign (%) and may be followed by letters, percent signs, or numbers.
     // TODO: The underscore (_) and dollar sign ($) characters are not legal in variable names.
     // https://stackoverflow.com/questions/32967395/exclude-characters-from-group-regex-while-still-looking-for-characters
-    _variable_name: $ => /[a-zA-Z%][a-zA-Z0-9%]*/,
+    _variable_name: $ => /[a-zA-Z%][a-zA-Z0-9@%]*/,
 
     local_variable: $ => $._variable_name,
 
@@ -584,12 +594,12 @@ module.exports = grammar({
       ),
     ),
 
-    indirection: $ => seq(
-      '@',
-      $._expression,
+    indirection: $ => prec(2,
+        seq(
+        '@',
+        $._expression,
+      ),
     ),
-
-
 
     binary_expression: $ => prec(2, 
       choice(

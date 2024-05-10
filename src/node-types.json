@@ -186,6 +186,10 @@
             "named": true
           },
           {
+            "type": "indirection",
+            "named": true
+          },
+          {
             "type": "local_array",
             "named": true
           },
@@ -1508,6 +1512,10 @@
   {
     "type": "_",
     "named": false
+  },
+  {
+    "type": "call_keyword",
+    "named": true
   },
   {
     "type": "control_code",
