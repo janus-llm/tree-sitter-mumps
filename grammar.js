@@ -4,7 +4,7 @@ module.exports = grammar({
   // We use src/scanner.c to handle context sensitive tokens, such as names
   externals: $ => [
     $._line_comment, // scanner.c checks for ; in column 0
-    $._label, // scanner.c checks for non-; non-ws in column 0
+    $.label, // scanner.c checks for non-; non-ws in column 0
     $._indent,
     $._dedent,
   ],
@@ -16,30 +16,27 @@ module.exports = grammar({
   rules: {
     program: $ => repeat1($.routine_definition),
 
-    _statement: $ => prec.left(5, 
-      seq(
-        choice(
-          $.routine_definition,
-          seq(
-            choice(
-              $._simple_statement,
-              $._compound_statement,
-            ),
-          ),
-        ),
-        optional(
-          $._newline,
-        ),
-      ),
-    ),
-    
-    routine_definition: $ => prec.left(
+    routine_definition: $ => seq(
       seq(
         $.label,
         optional($._function_arguments),
         choice(
           repeat($._statement), // Single line routine case
           $.block, // Code block routine case
+        ),
+      ),
+    ),
+
+    _statement: $ => prec.left(5, 
+      seq(
+        seq(
+          choice(
+            $._simple_statement,
+            $._compound_statement,
+          ),
+        ),
+        optional(
+          $._newline,
         ),
       ),
     ),
@@ -480,9 +477,9 @@ module.exports = grammar({
 
     argument: $ => $._expression,
 
-    label: $ => prec(9,
-      $._label, // This just allows for cases like function declarations where we want to parse a label and not name it
-    ),
+    // label: $ => prec(9,
+    //   $._label, // This just allows for cases like function declarations where we want to parse a label and not name it
+    // ),
 
     _function_arguments: $ => choice(
       "()",

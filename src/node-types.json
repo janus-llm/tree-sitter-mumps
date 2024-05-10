@@ -362,7 +362,7 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "assignment",
@@ -386,10 +386,6 @@
         },
         {
           "type": "if_statement",
-          "named": true
-        },
-        {
-          "type": "routine_definition",
           "named": true
         },
         {
@@ -469,7 +465,7 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "assignment",
@@ -501,10 +497,6 @@
         },
         {
           "type": "loop_control",
-          "named": true
-        },
-        {
-          "type": "routine_definition",
           "named": true
         },
         {
@@ -688,10 +680,6 @@
             "named": true
           },
           {
-            "type": "routine_definition",
-            "named": true
-          },
-          {
             "type": "while_statement",
             "named": true
           }
@@ -800,10 +788,6 @@
             "named": true
           },
           {
-            "type": "routine_definition",
-            "named": true
-          },
-          {
             "type": "while_statement",
             "named": true
           }
@@ -836,10 +820,6 @@
         },
         {
           "type": "if_statement",
-          "named": true
-        },
-        {
-          "type": "routine_definition",
           "named": true
         },
         {
@@ -918,11 +898,6 @@
   },
   {
     "type": "keyword",
-    "named": true,
-    "fields": {}
-  },
-  {
-    "type": "label",
     "named": true,
     "fields": {}
   },
@@ -1187,10 +1162,6 @@
           "named": true
         },
         {
-          "type": "routine_definition",
-          "named": true
-        },
-        {
           "type": "while_statement",
           "named": true
         }
@@ -1396,10 +1367,6 @@
           "named": true
         },
         {
-          "type": "routine_definition",
-          "named": true
-        },
-        {
           "type": "while_statement",
           "named": true
         }
@@ -1564,6 +1531,10 @@
   },
   {
     "type": "integer",
+    "named": true
+  },
+  {
+    "type": "label",
     "named": true
   },
   {
