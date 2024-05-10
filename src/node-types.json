@@ -1386,6 +1386,14 @@
     "named": false
   },
   {
+    "type": "$S",
+    "named": false
+  },
+  {
+    "type": "$SELECT",
+    "named": false
+  },
+  {
     "type": "&",
     "named": false
   },

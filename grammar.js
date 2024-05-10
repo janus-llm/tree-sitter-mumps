@@ -485,9 +485,9 @@ module.exports = grammar({
     _function_arguments: $ => choice(
       "()",
       seq(
-        "(",
-        $.arguments,
-        ")",
+        parenthesized(
+          $.arguments,
+        ),
       ),
     ),
 
@@ -660,11 +660,45 @@ module.exports = grammar({
     // },
 
     function_call: $ => prec(2,
-        seq(
+      seq(
         // This handles cases where the function call should return a value - calls to functions purely for their
         // side-effects (without a $ prefix) are handled in the DO command syntax)
         $.function_name,
         $._function_arguments,
+      ),
+    ),
+
+    _select_call: $ => seq(
+      // This handles cases where the function call should return a value - calls to functions purely for their
+      // side-effects (without a $ prefix) are handled in the DO command syntax)
+      choice(
+        "$S",
+        "$SELECT",
+      ),
+      $._select_arguments,
+    ),
+
+    _select_arguments: $ => prec.left(
+      seq(
+        $.argument,
+        optional(
+          seq(
+            ":",
+            $._expression,
+          ),
+        ),
+        repeat(
+          seq(
+            ",",
+            $.argument,
+            optional(
+              seq(
+                ":",
+                $._expression,
+              ),
+            ),
+          ),
+        ),
       ),
     ),
 
