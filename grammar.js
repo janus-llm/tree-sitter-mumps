@@ -414,15 +414,6 @@ module.exports = grammar({
       ),
     ),
 
-    simple_call: $ => prec(9,
-      seq(
-        $.call_keyword,
-        $.routine_call,
-      ),
-    ),
-
-    call_keyword: $ => /do|d|DO|D|goto|g|GOTO|G/,
-
     do_statement: $ => seq(
       /do|d|DO|D/,
       choice(

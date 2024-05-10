@@ -1514,10 +1514,6 @@
     "named": false
   },
   {
-    "type": "call_keyword",
-    "named": true
-  },
-  {
     "type": "control_code",
     "named": true
   },
