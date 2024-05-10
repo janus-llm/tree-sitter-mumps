@@ -447,16 +447,21 @@ module.exports = grammar({
     //   $.block,
     // ),
 
-    routine_call: $ => seq(
-      optional("^"),
-      field('label', $._routine_label),
-      optional(
-        seq(
-          "^",
-          field('routine', $._routine_label),
+    routine_call: $ => choice(
+      seq(
+        optional("^"),
+        field('label', $._routine_label),
+        optional(
+          seq(
+            "^",
+            field('routine', $._routine_label),
+          ),
         ),
+        optional($._function_arguments),
       ),
-      optional($._function_arguments),
+      prec(-1, 
+        $.indirection,
+      ),
     ),
 
     _routine_label: $ => /[A-Za-z0-9%]+/,
@@ -577,10 +582,17 @@ module.exports = grammar({
         seq('-', $._expression),  // Negative
         // seq('!', $._expression), TODO!
         seq('\'', $._expression),  // Not
-        seq('@', $._expression),  // Indirection
         seq('.', $._expression),  // Reference
+        $.indirection,
       ),
     ),
+
+    indirection: $ => seq(
+      '@',
+      $._expression,
+    ),
+
+
 
     binary_expression: $ => prec(2, 
       choice(
@@ -609,7 +621,6 @@ module.exports = grammar({
         prec.left(1, seq($._expression, '\'[', $._expression)),  // Does not contain
         prec.left(1, seq($._expression, '\']', $._expression)),  // Does not follow 
         prec.left(1, seq($._expression, '\']]', $._expression)),  // Not sorts after 
-        prec.left(1, seq($._expression, '_', $._expression)),  // String concatenation
         // String operators
         prec.left(1, seq($._expression, '_', $._expression)),  // String concatenation
         // Logical operators
@@ -706,6 +717,7 @@ module.exports = grammar({
       $.float,
       $.boolean,
       $.format_specifier,
+      $.control_code,
     ),
 
     // TODO: I don't know if this is real
@@ -739,6 +751,8 @@ module.exports = grammar({
     string: $ => /("[^"]*")+/,
 
     format_specifier: $ => token(prec(-1, /[0-9!?#/;]+/)),
+
+    control_code: $ => token(prec(-1, /\*[0-9]+/)),
 
     // Per docs: "the values in a string are, at a minimum, any ASCII character code between 32 to 127 (decimal) inclusive"
     // TODO: Currently excluding:
